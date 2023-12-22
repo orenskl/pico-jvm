@@ -1,0 +1,23 @@
+{
+    "buildType": {
+      "default": "Pico",
+      "description": "Build Type Selection",
+      "choices": {
+        "Pico": {
+          "short": "Pico",
+          "buildType": "Release",
+          "settings": {
+            "PICO": "",
+            "PICO_SDK_PATH":"/home/oren/projects/pico-sdk"
+          }
+        },
+        "Linux": {
+          "short": "Linux",
+          "buildType": "Release",
+          "settings": {
+            "LINUX":""
+          }
+        }
+      }
+    }
+}
