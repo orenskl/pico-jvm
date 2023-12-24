@@ -28,7 +28,6 @@
 
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
-#include "GlobalDefinitions_c.hpp"
 #include "Globals.hpp"
 
 #if USE_BINARY_IMAGE_LOADER

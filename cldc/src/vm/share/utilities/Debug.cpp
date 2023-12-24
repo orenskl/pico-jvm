@@ -53,7 +53,6 @@
 
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
-#include "GlobalDefinitions_c.hpp"
 #include "Globals.hpp"
 
 #include "Debug.hpp"

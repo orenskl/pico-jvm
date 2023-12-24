@@ -28,7 +28,6 @@
 
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
-#include "GlobalDefinitions_c.hpp"
 #include "Globals.hpp"
 
 // This class is not needed if the VM is built with C interpreter.

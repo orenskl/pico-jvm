@@ -28,7 +28,6 @@
 
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
-#include "GlobalDefinitions_c.hpp"
 #include "Globals.hpp"
 
 /* This profiler originally based on KVM profiler */ 
