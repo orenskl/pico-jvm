@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.22.1)
 
+#
+# The preverify tool is not built from source
+#
+# add_subdirectory(tools/preverify)
+
+find_package(Java REQUIRED)
+
 if (DEFINED PICO)
     # initialize the SDK based on PICO_SDK_PATH
     # note: this must happen before project()
@@ -13,20 +20,114 @@ if (DEFINED PICO)
     pico_sdk_init()
 endif()
 
-add_compile_definitions(SUPPORTS_MONOTONIC_CLOCK 
-                        GCC 
-                        REQUIRES_JVMCONFIG_H=1 
-                        HARDWARE_LITTLE_ENDIAN=1
-                        HOST_LITTLE_ENDIAN=1
-                        JVM_RELEASE_VERSION="1.1"
-                        JVM_BUILD_VERSION="internal"
-                        JVM_NAME="phoneME Feature VM"
-)
-if (DEFINED LINUX)
-    add_compile_definitions(LINUX)
-endif()
-
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+
+add_custom_command(OUTPUT classes.zip
+                   COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/classes
+                   COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/classes -bootclasspath ${CMAKE_BINARY_DIR}/classes
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/ConnectionNotFoundException.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/ContentConnection.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/StreamConnection.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/Connector.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/Datagram.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/InputConnection.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/StreamConnectionNotifier.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/DatagramConnection.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/OutputConnection.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/Connection.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/io/j2me/socket/Protocol.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/io/ConnectionBaseInterface.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/i18n/uclc/DefaultCaseConverter.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/i18n/j2me/ISO8859_1_Writer.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/i18n/j2me/ISO8859_1_Reader.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/i18n/StreamReader.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/i18n/StreamWriter.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/i18n/Helper.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/util/j2me/TimeZoneImpl.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/com/sun/cldc/util/j2me/CalendarImpl.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/InputStreamReader.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/OutputStreamWriter.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/ByteArrayInputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/DataOutputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/IOException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/UTFDataFormatException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/OutputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/InterruptedIOException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/Writer.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/InputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/DataInputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/DataInput.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/PrintStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/Reader.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/UnsupportedEncodingException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/EOFException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/DataOutput.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/io/ByteArrayOutputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Double.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/ref/WeakReference.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/ref/Reference.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Byte.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/FloatingDecimal.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/String.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/IllegalThreadStateException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Boolean.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/NegativeArraySizeException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/RuntimeException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/StringBuffer.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/IllegalAccessException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Thread.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/ClassNotFoundException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/ArrayIndexOutOfBoundsException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Character.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Float.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/SecurityException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/IllegalMonitorStateException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Math.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Runnable.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/OutOfMemoryError.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/InstantiationException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/IndexOutOfBoundsException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Integer.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/NoClassDefFoundError.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/NullPointerException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Exception.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/StringIndexOutOfBoundsException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/ClassCastException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/System.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/NumberFormatException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Short.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/ArrayStoreException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Throwable.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Long.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/IllegalArgumentException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/InterruptedException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Runtime.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/ArithmeticException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Object.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/VirtualMachineError.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Error.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/lang/Class.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/TimeZone.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/Date.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/Enumeration.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/Calendar.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/Vector.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/EmptyStackException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/Random.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/NoSuchElementException.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/Stack.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/java/util/Hashtable.java
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldchi/jvm/FileDescriptor.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldchi/jvm/JVM.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldchi/io/ConsoleOutputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldchi/test/Dummy.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldc/io/ResourceInputStream.java 
+                        ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldc/util/Semaphore.java
+                   COMMAND ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
+                   COMMAND cd ${CMAKE_BINARY_DIR}/classes.preverify
+                   COMMAND zip ARGS -0 -r ${CMAKE_BINARY_DIR}/classes.zip .             
+)
+add_custom_target(classes ALL DEPENDS classes.zip)
 
 include_directories(cldc/src/include 
                     cldc/src/vm/share/runtime
@@ -280,8 +381,20 @@ if (DEFINED PICO)
     pico_enable_stdio_uart(pjvm 0)
 endif()
 
+target_compile_definitions(pjvm PRIVATE
+                        SUPPORTS_MONOTONIC_CLOCK 
+                        GCC 
+                        REQUIRES_JVMCONFIG_H=1 
+                        HARDWARE_LITTLE_ENDIAN=1
+                        HOST_LITTLE_ENDIAN=1
+                        JVM_RELEASE_VERSION="1.1"
+                        JVM_BUILD_VERSION="internal"
+                        JVM_NAME="phoneME Feature VM"
+)
+
 if (DEFINED LINUX)
-    target_compile_options(pjvm PUBLIC -m32 
+    target_compile_definitions(pjvm PRIVATE LINUX)
+    target_compile_options(pjvm PRIVATE -m32 
                                        -Wuninitialized 
                                        -Wreturn-type 
                                        -Wcomment 
@@ -295,8 +408,6 @@ if (DEFINED LINUX)
                                        -fno-optional-diags
                                        -fno-rtti
     )
-    target_link_options(pjvm PUBLIC -m32)
+    target_link_options(pjvm PRIVATE -m32)
     target_link_libraries(pjvm m pthread)
 endif()
-
-
