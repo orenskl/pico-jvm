@@ -48,7 +48,6 @@
 #include <signal.h>
 
 #include "BuildFlags.hpp"
-#include "BuildFlags_linux.hpp"
 #include "GlobalDefinitions.hpp"
 #include "GlobalDefinitions_c.hpp"
 #include "GlobalDefinitions_gcc.hpp"
