@@ -29,7 +29,6 @@
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
 #include "GlobalDefinitions_c.hpp"
-#include "GlobalDefinitions_gcc.hpp"
 #include "Globals.hpp"
 
 // Note the "&& 0" here. As of 2004/08/25 this code compiles with the

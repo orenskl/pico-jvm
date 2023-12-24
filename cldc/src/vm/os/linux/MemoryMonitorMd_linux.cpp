@@ -33,7 +33,6 @@
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
 #include "GlobalDefinitions_c.hpp"
-#include "GlobalDefinitions_gcc.hpp"
 #include "Globals.hpp"
 
 #if 0 && ENABLE_MEMORY_MONITOR

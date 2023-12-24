@@ -66,7 +66,6 @@
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
 #include "GlobalDefinitions_c.hpp"
-#include "GlobalDefinitions_gcc.hpp"
 #include "Globals.hpp"
 
 #include "Generator.hpp"

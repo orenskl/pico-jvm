@@ -29,7 +29,6 @@
 #include "BuildFlags.hpp"
 #include "GlobalDefinitions.hpp"
 #include "GlobalDefinitions_c.hpp"
-#include "GlobalDefinitions_gcc.hpp"
 #include "Globals.hpp"
    
 #if ENABLE_ROM_GENERATOR && USE_SEGMENTED_TEXT_BLOCK_WRITER
