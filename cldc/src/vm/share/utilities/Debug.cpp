@@ -182,7 +182,9 @@ void warning(const char* format, ...) {
 void report_fatal(const char* file_name, int line_no, ErrorMsgTag err) {
   report_error(true, file_name, line_no, "Internal Error", "Fatal: %s", 
                ErrorMessage::get(err));
+#ifdef ENABLE_BKPT_FATAL
   BREAKPOINT;
+#endif
   JVM::exit(-1);
 }
 
