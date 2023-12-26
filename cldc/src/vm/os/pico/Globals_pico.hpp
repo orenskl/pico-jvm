@@ -24,40 +24,6 @@
  * information or have any questions.
  */
 
-#ifndef _FILEDECODERDESC_HPP_
-#define _FILEDECODERDESC_HPP_
-
-#include "MixedOopDesc.hpp"
-#include "Buffer.hpp"
-#include "OsFile.hpp"
-
-class FileDecoderDesc : public MixedOopDesc {
-private:
-  // The following buffers are not used directly by FileDecoder
-  // but they are needed by the child class Inflater.
-  // According to MixedOopDesc layout pointers should come first
-  TypeArray*  _jar_file_name;
-  Buffer*     _in_buffer;
-  Buffer*     _out_buffer;
-  Buffer*     _length_buffer;
-  Buffer*     _distance_buffer;
-
-  OsFile_Handle  _file_handle;
-  int            _file_pos;
-  int            _file_size;
-  int            _bytes_remain;
-  int            _flags;
-
-  static int allocation_size() {
-    return sizeof(FileDecoderDesc);
-  }
-
-  static int pointer_count() {
-    return 5;
-  }
-
-  friend class FileDecoder;
-  friend class Inflater;
-};
-
-#endif /* _FILEDECODERDESC_HPP_ */
+/*
+ * Globals_generic.hpp: Command line switches for the Generic platform.
+ */

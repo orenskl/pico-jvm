@@ -41,7 +41,6 @@
 #include "jvm.h"
 #include "Scheduler.hpp"
 
-#include <stdarg.h>
 #include <setjmp.h>
 
 extern "C" {
@@ -124,10 +123,12 @@ extern "C" {
   // has_Interpreter, has_FloatingPoint, has_TraceBytecodes
   jint assembler_loop_type = 0x1 + 0x40 + 0x4;
 
-#if !defined(PRODUCT) || USE_DEBUG_PRINTING
-  jlong interpreter_pair_counters[Bytecodes::number_of_java_codes *
-                                  Bytecodes::number_of_java_codes];
-  jlong interpreter_bytecode_counters[Bytecodes::number_of_java_codes];
+#ifdef ENABLE_HISTOGRAMS
+  #if !defined(PRODUCT) || USE_DEBUG_PRINTING
+    jlong interpreter_pair_counters[Bytecodes::number_of_java_codes *
+                                    Bytecodes::number_of_java_codes];
+    jlong interpreter_bytecode_counters[Bytecodes::number_of_java_codes];
+  #endif
 #endif
 
   // bytecode stream accessors
@@ -1544,7 +1545,8 @@ enum {
 
     _jvm_in_quick_native_method = 1;
     jint r1, r2;
-    invoke_native_entry(native_ptr, return_type, 0, NULL, r1, r2);
+    va_list ap;
+    invoke_native_entry(native_ptr, return_type, 0, ap, r1, r2);
     _jvm_in_quick_native_method = 0;
 
     if (_jvm_quick_native_exception != NULL) {

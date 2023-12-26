@@ -33,7 +33,7 @@
 #define _STREAM_HPP_
 
 #include "Allocation.hpp"
-#include "OsFile_linux.hpp"
+#include "OsFile.hpp"
 
 #if ENABLE_VERBOSE_ASSERTION
 #define JVM_VSNPRINTF_WARN(file, line) \

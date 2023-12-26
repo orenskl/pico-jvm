@@ -1,16 +1,8 @@
 {
     "configurations": [
         {
-            "name": "Linux",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "/home/oren/projects/pico-sdk/src/**"
-            ],
-            "defines": ["__ARM_ARCH_6M__"],
-            "compilerPath": "/usr/bin/arm-none-eabi-gcc",
-            "cStandard": "c17",
-            "cppStandard": "gnu++17",
-            "intelliSenseMode": "linux-gcc-arm"
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

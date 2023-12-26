@@ -31,6 +31,13 @@
 #ifndef _OSFILE_HPP_
 #define _OSFILE_HPP_
 
+#ifdef LINUX
+  #include "OsFile_linux.hpp"
+#endif
+#ifdef PICO
+  #include "OsFile_pico.hpp"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

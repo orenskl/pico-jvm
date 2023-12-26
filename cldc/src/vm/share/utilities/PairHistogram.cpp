@@ -34,7 +34,7 @@
 #include "Stream.hpp"
 #include "jvm.h"
 
-#if USE_DEBUG_PRINTING
+#if USE_DEBUG_PRINTING && defined(ENABLE_HISTOGRAMS)
 
 void PairHistogram::reset_counters() {
   for (int i = 0; i < Bytecodes::number_of_java_codes; i++) {

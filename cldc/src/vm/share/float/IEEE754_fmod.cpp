@@ -36,6 +36,9 @@
 #include "GlobalDefinitions.hpp"
 #include "Globals.hpp"
 
+#include "FloatNatives.hpp"
+#include "jvm.h"
+
 #if ENABLE_FLOAT
 
 #if ARM

@@ -463,7 +463,7 @@
  *       application image files for fast class loading.
  */
 
-#define ENABLE_MONET                  0  /* Platform default: jvm.make */
+ #define ENABLE_MONET                  0  /* Platform default: jvm.make */
 
 /*
  * ENABLE_MONET_COMPILATION
@@ -682,7 +682,7 @@
  *       in THUMB mode.
  */
 
-#define ENABLE_THUMB_VM               0  /* VM default: BuildFlags.hpp */
+#define ENABLE_THUMB_VM               1  /* VM default: BuildFlags.hpp */
 
 /*
  * ENABLE_THUMB_COMPILER
@@ -713,7 +713,7 @@
  *       signal handler.
  */
 
-#define ENABLE_TIMER_THREAD           1  /* VM default: BuildFlags.hpp */
+#define ENABLE_TIMER_THREAD           0  /* VM default: BuildFlags.hpp */
 
 /*
  * ENABLE_TTY_TRACE

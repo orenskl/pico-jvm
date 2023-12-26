@@ -32,6 +32,7 @@
 #include "ROMOptimizer.hpp"
 #include "Arguments.hpp"
 #include "OsFile.hpp"
+#include "jvm.h"
 
 #if ENABLE_ROM_GENERATOR
 

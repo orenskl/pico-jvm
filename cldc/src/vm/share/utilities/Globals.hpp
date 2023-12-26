@@ -81,7 +81,12 @@
 #ifndef _GLOBALS_HPP_
 #define _GLOBALS_HPP_
 
-#include "Globals_linux.hpp"
+#ifdef LINUX
+  #include "Globals_linux.hpp"
+#endif
+#ifdef PICO
+  #include "Globals_pico.hpp"
+#endif
 
 struct JVMFlag;
 class Globals {

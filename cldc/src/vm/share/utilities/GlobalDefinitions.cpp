@@ -41,6 +41,7 @@
 
 #include "Debug.hpp"
 #include "Array.hpp"
+#include "JVM.hpp"
 
 // Support for 64-bit integer arithmetic
 
@@ -246,7 +247,7 @@ void global_breakpoint() {
     BREAKPOINT;
 #else
     // IMPL_NOTE: move this into OS class
-    panic();
+    JVM::exit(EXIT_FAILURE);
 #endif
 #endif
 

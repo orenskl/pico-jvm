@@ -86,7 +86,12 @@
 #ifndef _BUILDFLAGS_HPP_
 #define _BUILDFLAGS_HPP_
 
-#include "BuildFlags_linux.hpp"
+#ifdef LINUX
+    #include "BuildFlags_linux.hpp"
+#endif
+#ifdef PICO
+    #include "BuildFlags_pico.hpp"
+#endif
 
 #ifndef CROSS_GENERATOR
 #define CROSS_GENERATOR 0
@@ -854,7 +859,7 @@
 #  define ARM 1
 #endif
 
-#if defined(ARM) && !ENABLE_INTERPRETER_GENERATOR && !CROSS_GENERATOR
+#if defined(LINUX) && defined(ARM) && !ENABLE_INTERPRETER_GENERATOR && !CROSS_GENERATOR
 #  define ARM_EXECUTABLE 1
 #else
 #  define ARM_EXECUTABLE 0

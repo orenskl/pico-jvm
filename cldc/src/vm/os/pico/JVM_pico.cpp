@@ -24,40 +24,40 @@
  * information or have any questions.
  */
 
-#ifndef _FILEDECODERDESC_HPP_
-#define _FILEDECODERDESC_HPP_
+/*
+ * JVM_generic.cpp: Generic-specific VM startup and
+ *                  shutdown routines.
+ *
+ * This file provides Generic-specific virtual machine
+ * startup and shutdown routines.  Refer to file
+ * "/src/vm/share/runtime/JVM.hpp" and the Porting
+ * Guide for details.
+ */
 
-#include "MixedOopDesc.hpp"
-#include "Buffer.hpp"
-#include "OsFile.hpp"
+#include "jvmconfig.h"
 
-class FileDecoderDesc : public MixedOopDesc {
-private:
-  // The following buffers are not used directly by FileDecoder
-  // but they are needed by the child class Inflater.
-  // According to MixedOopDesc layout pointers should come first
-  TypeArray*  _jar_file_name;
-  Buffer*     _in_buffer;
-  Buffer*     _out_buffer;
-  Buffer*     _length_buffer;
-  Buffer*     _distance_buffer;
+#include "BuildFlags.hpp"
+#include "GlobalDefinitions.hpp"
+#include "Globals.hpp"
 
-  OsFile_Handle  _file_handle;
-  int            _file_pos;
-  int            _file_size;
-  int            _bytes_remain;
-  int            _flags;
+#include "JVM.hpp"
+#include "Stream.hpp"
+#include "Arguments.hpp"
 
-  static int allocation_size() {
-    return sizeof(FileDecoderDesc);
-  }
+static int executeVM( void ) {
+  const int result = JVM::start();
+  Arguments::finalize();
+  return result;
+}
 
-  static int pointer_count() {
-    return 5;
-  }
+extern "C" int JVM_Start(const char *classpath, char *main_class, int argc,
+                         char **argv) {
+  JVM::set_arguments(classpath, main_class, argc, argv);
+  return executeVM();
+}
 
-  friend class FileDecoder;
-  friend class Inflater;
-};
-
-#endif /* _FILEDECODERDESC_HPP_ */
+extern "C" int JVM_Start2(const char *classpath, char *main_class, int argc,
+                          jchar **u_argv) {
+  JVM::set_arguments2(classpath, main_class, argc, NULL, u_argv, true);
+  return executeVM();
+}

@@ -24,40 +24,31 @@
  * information or have any questions.
  */
 
-#ifndef _FILEDECODERDESC_HPP_
-#define _FILEDECODERDESC_HPP_
+#include "jvmconfig.h"
 
-#include "MixedOopDesc.hpp"
-#include "Buffer.hpp"
-#include "OsFile.hpp"
+#include "BuildFlags.hpp"
+#include "GlobalDefinitions.hpp"
+#include "Globals.hpp"
 
-class FileDecoderDesc : public MixedOopDesc {
-private:
-  // The following buffers are not used directly by FileDecoder
-  // but they are needed by the child class Inflater.
-  // According to MixedOopDesc layout pointers should come first
-  TypeArray*  _jar_file_name;
-  Buffer*     _in_buffer;
-  Buffer*     _out_buffer;
-  Buffer*     _length_buffer;
-  Buffer*     _distance_buffer;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-  OsFile_Handle  _file_handle;
-  int            _file_pos;
-  int            _file_size;
-  int            _bytes_remain;
-  int            _flags;
+void *OsMemory_allocate(size_t size) {
+	/* 
+	 * Allocates memory blocks in memory pool (heap)
+	 * size: bytes to be allocated 
+	 * malloc returns a void pointer to the allocated space.  
+	 * if there is insufficient memory available, it returns NULL (0)
+	 */
+  return malloc(size);
+}
 
-  static int allocation_size() {
-    return sizeof(FileDecoderDesc);
-  }
+void OsMemory_free(void *p) {
+  /* Deallocates or frees a memory block (pointer *p ) */
+  free(p);
+}
 
-  static int pointer_count() {
-    return 5;
-  }
-
-  friend class FileDecoder;
-  friend class Inflater;
-};
-
-#endif /* _FILEDECODERDESC_HPP_ */
+#ifdef __cplusplus
+}
+#endif

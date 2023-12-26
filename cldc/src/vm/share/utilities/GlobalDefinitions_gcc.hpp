@@ -37,7 +37,7 @@
 
 # include <ctype.h>
 # include <string.h>
-#if defined(LINUX) && !defined(SOLARIS)
+#if (defined(LINUX) || defined(PICO)) && !defined(SOLARIS)
 # include <stdint.h>
 #endif
 # include <stdarg.h>
@@ -85,7 +85,6 @@ inline jdouble jdouble_cast(jlong   x)           { return *(jdouble*)&x; }
 #if ENABLE_THUMB_VM
 
 #  define BREAKPOINT __asm__ ("swi 0x01")
-#  define panic() __asm__ ("swi 0x01")
 inline unsigned int _rotr(unsigned int x, unsigned int y) {
     int result;
     asm("ror %0, %2"         : "=l" (result) : "0" (x), "l" (y));
@@ -179,7 +178,7 @@ const jlong max_jlong = ~min_jlong;
 //---------------------------------------------------------------------------
 
 // Portability macros
-#ifdef LINUX
+#if defined(LINUX) || defined(PICO)
 #define __cdecl
 #define _cdecl
 #endif

@@ -24,40 +24,22 @@
  * information or have any questions.
  */
 
-#ifndef _FILEDECODERDESC_HPP_
-#define _FILEDECODERDESC_HPP_
+/*
+ * BuildFlags_generic.hpp: compile-time
+ * configuration options for the Generic platform.
+ */
 
-#include "MixedOopDesc.hpp"
-#include "Buffer.hpp"
-#include "OsFile.hpp"
+// Enable the following flag if you want to test the UNICODE
+// FilePath handling under Generic
+// #define USE_UNICODE_FOR_FILENAMES 1
 
-class FileDecoderDesc : public MixedOopDesc {
-private:
-  // The following buffers are not used directly by FileDecoder
-  // but they are needed by the child class Inflater.
-  // According to MixedOopDesc layout pointers should come first
-  TypeArray*  _jar_file_name;
-  Buffer*     _in_buffer;
-  Buffer*     _out_buffer;
-  Buffer*     _length_buffer;
-  Buffer*     _distance_buffer;
+// We don't use BSDSocket.cpp to implement sockets on this platform
+#define USE_BSD_SOCKET 0
 
-  OsFile_Handle  _file_handle;
-  int            _file_pos;
-  int            _file_size;
-  int            _bytes_remain;
-  int            _flags;
+// The Generic port support TIMER_THREAD but not TIMER_INTERRUPT
+#define SUPPORTS_TIMER_THREAD        1
+#define SUPPORTS_TIMER_INTERRUPT     1
 
-  static int allocation_size() {
-    return sizeof(FileDecoderDesc);
-  }
-
-  static int pointer_count() {
-    return 5;
-  }
-
-  friend class FileDecoder;
-  friend class Inflater;
-};
-
-#endif /* _FILEDECODERDESC_HPP_ */
+// The Generic port does not support adjustable memory chunks for
+// implementing the Java heap.
+#define SUPPORTS_ADJUSTABLE_MEMORY_CHUNK 0

@@ -868,13 +868,15 @@ void JVM::development_prologue() {
 
 void JVM::development_epilogue(JVM_SINGLE_ARG_TRAPS) {
 #if USE_DEBUG_PRINTING
-  if (PrintBytecodeHistogram)   {
-    ObjectHeap::safe_collect(0 JVM_CHECK);
-    BytecodeHistogram::print(jvm_i2f(BytecodeHistogramCutOff));
-  }
-  if (PrintPairHistogram) {
-    PairHistogram::print(jvm_i2f(PairHistogramCutOff));
-  }
+  #ifdef ENABLE_HISTOGRAMS
+    if (PrintBytecodeHistogram)   {
+      ObjectHeap::safe_collect(0 JVM_CHECK);
+      BytecodeHistogram::print(jvm_i2f(BytecodeHistogramCutOff));
+    }
+    if (PrintPairHistogram) {
+      PairHistogram::print(jvm_i2f(PairHistogramCutOff));
+    }
+  #endif
   if (PrintAllObjects) {
     ObjectHeap::print_all_objects();
   }

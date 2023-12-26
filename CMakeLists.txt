@@ -129,111 +129,76 @@ add_custom_command(OUTPUT classes.zip
 )
 add_custom_target(classes ALL DEPENDS classes.zip)
 
-include_directories(cldc/src/include 
-                    cldc/src/vm/share/runtime
-                    cldc/src/vm/share/memory
-                    cldc/src/vm/share/utilities
-                    cldc/src/vm/share/natives
-                    cldc/src/vm/share/handles
-                    cldc/src/vm/cpu/c
-                    cldc/src/vm/os/linux
-                    cldc/src/vm/share/ROM
-                    cldc/src/vm/share/interpreter
-                    cldc/src/vm/share/debugger
-                    cldc/src/vm/share/compiler
-                    cldc/src/vm/share/float
-                    cldc/src/vm/share/verifier
-)
+if (DEFINED PICO)
+    set(PJVM_SOURCE_OS_FILES 
+        cldc/src/vm/os/pico/JVM_pico.cpp
+        cldc/src/vm/os/pico/OS_pico.cpp
+        cldc/src/vm/os/pico/OsFile_pico.cpp
+        cldc/src/vm/os/pico/OsMemory_pico.cpp
+        cldc/src/vm/os/pico/OsMisc_pico.cpp
+        cldc/src/vm/os/pico/Main_pico.cpp
+    )
+endif()
+if (DEFINED LINUX)
+    set(PJVM_SOURCE_OS_FILES 
+        cldc/src/vm/os/linux/JVM_linux.cpp
+        cldc/src/vm/os/linux/MemoryMonitorMd_linux.cpp
+        cldc/src/vm/os/linux/OS_linux.cpp
+        cldc/src/vm/os/linux/OsFile_linux.cpp
+        cldc/src/vm/os/linux/OsMemory_linux.cpp
+        cldc/src/vm/os/linux/OsMisc_linux.cpp
+        cldc/src/vm/os/linux/OsSocket_linux.cpp
+        cldc/src/vm/os/linux/Main_linux.cpp
+    )
+endif()
 
 add_executable(pjvm
     #------- Library libcldc_vm start
-    cldc/src/vm/share/utilities/AccessFlags.cpp
-    cldc/src/vm/share/compiler/Addressing.cpp
     cldc/src/vm/cpu/c/Addressing_c.cpp
-    cldc/src/vm/share/memory/Allocation.cpp
-    cldc/src/vm/share/utilities/Arguments.cpp
-    cldc/src/vm/share/handles/Array.cpp
-    cldc/src/vm/share/handles/ArrayClass.cpp
-    cldc/src/vm/share/memory/ArrayClassDesc.cpp
     cldc/src/vm/cpu/c/Assembler_c.cpp
-    cldc/src/vm/share/compiler/BinaryAssemblerCommon.cpp
     cldc/src/vm/cpu/c/BinaryAssembler_c.cpp
-    cldc/src/vm/share/compiler/BinaryLabel.cpp
-    cldc/src/vm/share/ROM/BinaryROM.cpp
-    cldc/src/vm/share/handles/Boundary.cpp
-    cldc/src/vm/share/handles/Buffer.cpp
-    cldc/src/vm/share/runtime/BufferedFile.cpp
-    cldc/src/vm/share/compiler/BytecodeClosure.cpp
-    cldc/src/vm/share/compiler/BytecodeCompileClosure.cpp
-    cldc/src/vm/share/utilities/BytecodeHistogram.cpp
-    cldc/src/vm/share/ROM/BytecodeOptimizer.cpp
-    cldc/src/vm/share/utilities/BytecodePrintClosure.cpp
-    cldc/src/vm/share/interpreter/Bytecodes.cpp
-    cldc/src/vm/share/handles/CallInfo.cpp
-    cldc/src/vm/share/utilities/CharacterStream.cpp
-    cldc/src/vm/share/runtime/ClassFileParser.cpp
-    cldc/src/vm/share/handles/ClassInfo.cpp
-    cldc/src/vm/share/memory/ClassInfoDesc.cpp
-    cldc/src/vm/share/handles/ClassParserState.cpp
-    cldc/src/vm/share/memory/ClassParserStateDesc.cpp
-    cldc/src/vm/share/runtime/ClassPathAccess.cpp
-    cldc/src/vm/share/compiler/CodeGenerator.cpp
     cldc/src/vm/cpu/c/CodeGenerator_c.cpp
     cldc/src/vm/cpu/c/CodeOptimizer_c.cpp
-    cldc/src/vm/share/compiler/CompilationQueue.cpp
     cldc/src/vm/cpu/c/CompilationQueue_c.cpp
-    cldc/src/vm/share/handles/CompiledMethod.cpp
-    cldc/src/vm/share/memory/CompiledMethodCache.cpp
-    cldc/src/vm/share/memory/CompiledMethodDesc.cpp
-    cldc/src/vm/cpu/c/CompiledMethodDesc_c.cpp
     cldc/src/vm/cpu/c/CompiledMethod_c.cpp
+    cldc/src/vm/cpu/c/CompiledMethodDesc_c.cpp
+    cldc/src/vm/cpu/c/Debug_c.cpp
+    cldc/src/vm/cpu/c/Disassembler_c.cpp
+    cldc/src/vm/cpu/c/FloatSupport_c.cpp
+    cldc/src/vm/cpu/c/FPURegisterMap_c.cpp
+    cldc/src/vm/cpu/c/Frame_c.cpp
+    cldc/src/vm/cpu/c/GlobalDefinitions_c.cpp
+    cldc/src/vm/cpu/c/Instructions_c.cpp
+    cldc/src/vm/cpu/c/Interpreter_c.cpp
+    cldc/src/vm/cpu/c/InterpreterRuntime_c.cpp
+    cldc/src/vm/cpu/c/RegisterAllocator_c.cpp
+    cldc/src/vm/cpu/c/VirtualStackFrame_c.cpp
+    cldc/src/vm/share/compiler/Addressing.cpp
+    cldc/src/vm/share/compiler/BinaryAssemblerCommon.cpp
+    cldc/src/vm/share/compiler/BinaryLabel.cpp
+    cldc/src/vm/share/compiler/BytecodeClosure.cpp
+    cldc/src/vm/share/compiler/BytecodeCompileClosure.cpp
+    cldc/src/vm/share/compiler/CodeGenerator.cpp
+    cldc/src/vm/share/compiler/CompilationQueue.cpp
     cldc/src/vm/share/compiler/Compiler.cpp
     cldc/src/vm/share/compiler/CompilerObject.cpp
     cldc/src/vm/share/compiler/CompilerTest.cpp
-    cldc/src/vm/share/handles/ConstantPool.cpp
-    cldc/src/vm/share/memory/ConstantPoolDesc.cpp
-    cldc/src/vm/share/ROM/ConstantPoolRewriter.cpp
-    cldc/src/vm/share/utilities/ConstantTag.cpp
+    cldc/src/vm/share/compiler/LiteralPoolElement.cpp
+    cldc/src/vm/share/compiler/Location.cpp
+    cldc/src/vm/share/compiler/RegisterAllocator.cpp
+    cldc/src/vm/share/compiler/Relocation.cpp
+    cldc/src/vm/share/compiler/Value.cpp
+    cldc/src/vm/share/compiler/VirtualStackFrame.cpp
+    cldc/src/vm/share/compiler/VSFMergeTest.cpp
+    cldc/src/vm/share/debugger/JavaDebugger.cpp
+    cldc/src/vm/share/debugger/MemoryMonitor.cpp
+    cldc/src/vm/share/debugger/MemoryMonitorMd.cpp
+    cldc/src/vm/share/debugger/VMEvent.cpp
     cldc/src/vm/share/float/Cosine_kernel.cpp
-    cldc/src/vm/share/runtime/DeadlockFinder.cpp
-    cldc/src/vm/share/utilities/Debug.cpp
-    cldc/src/vm/cpu/c/Debug_c.cpp
-    cldc/src/vm/cpu/c/Disassembler_c.cpp
-    cldc/src/vm/share/handles/EntryActivation.cpp
-    cldc/src/vm/share/memory/EntryActivationDesc.cpp
-    cldc/src/vm/share/utilities/ErrorMessage.cpp
-    cldc/src/vm/share/utilities/EventLogger.cpp
-    cldc/src/vm/share/handles/ExecutionStack.cpp
-    cldc/src/vm/share/memory/ExecutionStackDesc.cpp
-    cldc/src/vm/cpu/c/FPURegisterMap_c.cpp
-    cldc/src/vm/share/handles/FarClass.cpp
-    cldc/src/vm/share/memory/FarClassDesc.cpp
-    cldc/src/vm/share/runtime/Field.cpp
-    cldc/src/vm/share/handles/FieldType.cpp
-    cldc/src/vm/share/runtime/FileDecoder.cpp
-    cldc/src/vm/share/runtime/FilePath.cpp
-    cldc/src/vm/share/memory/FinalizerConsDesc.cpp
     cldc/src/vm/share/float/FloatNatives.cpp
-    cldc/src/vm/cpu/c/FloatSupport_c.cpp
-    cldc/src/vm/share/runtime/Frame.cpp
-    cldc/src/vm/cpu/c/Frame_c.cpp
-    cldc/src/vm/share/utilities/Generator.cpp
-    cldc/src/vm/share/utilities/GlobalDefinitions.cpp
-    cldc/src/vm/cpu/c/GlobalDefinitions_c.cpp
-    cldc/src/vm/share/utilities/Globals.cpp
-    cldc/src/vm/share/runtime/HotRoutines0.cpp
-    cldc/src/vm/share/runtime/HotRoutines1.cpp
     cldc/src/vm/share/float/IEEE754_fmod.cpp
     cldc/src/vm/share/float/IEEE754_rem_pio2.cpp
     cldc/src/vm/share/float/IEEE754_sqrt.cpp
-    cldc/src/vm/share/runtime/Inflate.cpp
-    cldc/src/vm/share/handles/Instance.cpp
-    cldc/src/vm/share/handles/InstanceClass.cpp
-    cldc/src/vm/share/memory/InstanceClassDesc.cpp
-    cldc/src/vm/cpu/c/Instructions_c.cpp
-    cldc/src/vm/share/interpreter/InterpreterRuntime.cpp
-    cldc/src/vm/cpu/c/InterpreterRuntime_c.cpp
-    cldc/src/vm/cpu/c/Interpreter_c.cpp
     cldc/src/vm/share/float/JFP_lib_acos.cpp
     cldc/src/vm/share/float/JFP_lib_asin.cpp
     cldc/src/vm/share/float/JFP_lib_atan.cpp
@@ -246,55 +211,92 @@ add_executable(pjvm
     cldc/src/vm/share/float/JFP_lib_scalbn.cpp
     cldc/src/vm/share/float/JFP_lib_sin.cpp
     cldc/src/vm/share/float/JFP_lib_tan.cpp
-    cldc/src/vm/share/runtime/JVM.cpp
-    cldc/src/vm/os/linux/JVM_linux.cpp
-    cldc/src/vm/share/runtime/JarFileParser.cpp
-    cldc/src/vm/share/runtime/JarFileUncommon.cpp
+    cldc/src/vm/share/float/Remainder_pio2_kernel.cpp
+    cldc/src/vm/share/float/Sine_kernel.cpp
+    cldc/src/vm/share/float/Tangent_kernel.cpp
+    cldc/src/vm/share/handles/Array.cpp
+    cldc/src/vm/share/handles/ArrayClass.cpp
+    cldc/src/vm/share/handles/Boundary.cpp
+    cldc/src/vm/share/handles/Buffer.cpp
+    cldc/src/vm/share/handles/CallInfo.cpp
+    cldc/src/vm/share/handles/ClassInfo.cpp
+    cldc/src/vm/share/handles/ClassParserState.cpp
+    cldc/src/vm/share/handles/CompiledMethod.cpp
+    cldc/src/vm/share/handles/ConstantPool.cpp
+    cldc/src/vm/share/handles/EntryActivation.cpp
+    cldc/src/vm/share/handles/ExecutionStack.cpp
+    cldc/src/vm/share/handles/FarClass.cpp
+    cldc/src/vm/share/handles/FieldType.cpp
+    cldc/src/vm/share/handles/Instance.cpp
+    cldc/src/vm/share/handles/InstanceClass.cpp
     cldc/src/vm/share/handles/JavaClass.cpp
-    cldc/src/vm/share/memory/JavaClassDesc.cpp
     cldc/src/vm/share/handles/JavaClassObj.cpp
-    cldc/src/vm/share/debugger/JavaDebugger.cpp
     cldc/src/vm/share/handles/JavaNear.cpp
     cldc/src/vm/share/handles/JavaOop.cpp
-    cldc/src/vm/share/runtime/JavaVTable.cpp
-    cldc/src/vm/share/natives/KniUncommon.cpp
-    cldc/src/vm/share/memory/LargeObject.cpp
-    cldc/src/vm/share/compiler/LiteralPoolElement.cpp
-    cldc/src/vm/share/compiler/Location.cpp
-    cldc/src/vm/share/debugger/MemoryMonitor.cpp
-    cldc/src/vm/share/debugger/MemoryMonitorMd.cpp
-    cldc/src/vm/os/linux/MemoryMonitorMd_linux.cpp
-    cldc/src/vm/share/memoryprofiler/MemoryProfiler.cpp
     cldc/src/vm/share/handles/MetaObjType.cpp
-    cldc/src/vm/share/memory/MetaObjTypeDesc.cpp
     cldc/src/vm/share/handles/Method.cpp
-    cldc/src/vm/share/memory/MethodDesc.cpp
-    cldc/src/vm/share/ROM/MethodInvocationClosure.cpp
-    cldc/src/vm/share/runtime/MethodTrap.cpp
     cldc/src/vm/share/handles/MixedOop.cpp
-    cldc/src/vm/share/memory/MixedOopDesc.cpp
-    cldc/src/vm/share/natives/Natives.cpp
     cldc/src/vm/share/handles/Near.cpp
     cldc/src/vm/share/handles/NearClass.cpp
-    cldc/src/vm/share/runtime/OS.cpp
-    cldc/src/vm/os/linux/OS_linux.cpp
     cldc/src/vm/share/handles/ObjArray.cpp
     cldc/src/vm/share/handles/ObjArrayClass.cpp
     cldc/src/vm/share/handles/ObjNear.cpp
-    cldc/src/vm/share/memory/ObjNearDesc.cpp
-    cldc/src/vm/share/memory/ObjectHeap.cpp
     cldc/src/vm/share/handles/Oop.cpp
-    cldc/src/vm/share/memory/OopDesc.cpp
     cldc/src/vm/share/handles/OopVisitor.cpp
-    cldc/src/vm/share/runtime/OsFile.cpp
-    cldc/src/vm/os/linux/OsFile_linux.cpp
-    cldc/src/vm/share/runtime/OsMemory.cpp
-    cldc/src/vm/os/linux/OsMemory_linux.cpp
-    cldc/src/vm/os/linux/OsMisc_linux.cpp
-    cldc/src/vm/os/linux/OsSocket_linux.cpp
+    cldc/src/vm/share/handles/ROMizerHashEntry.cpp
+    cldc/src/vm/share/handles/Signature.cpp
+    cldc/src/vm/share/handles/SoftRefArray.cpp
+    cldc/src/vm/share/handles/StackmapList.cpp
+    cldc/src/vm/share/handles/String.cpp
+    cldc/src/vm/share/handles/StringTable.cpp
+    cldc/src/vm/share/handles/Symbol.cpp
+    cldc/src/vm/share/handles/Symbols.cpp
+    cldc/src/vm/share/handles/SymbolTable.cpp
+    cldc/src/vm/share/handles/ThreadObj.cpp
+    cldc/src/vm/share/handles/TypeArray.cpp
+    cldc/src/vm/share/handles/TypeArrayClass.cpp
+    cldc/src/vm/share/handles/TypeSymbol.cpp
+    cldc/src/vm/share/handles/Universe.cpp
+    cldc/src/vm/share/handles/WeakRefArray.cpp
+    cldc/src/vm/share/handles/WeakReference.cpp
+    cldc/src/vm/share/interpreter/Bytecodes.cpp
+    cldc/src/vm/share/interpreter/InterpreterRuntime.cpp
+    cldc/src/vm/share/memory/Allocation.cpp
+    cldc/src/vm/share/memory/ArrayClassDesc.cpp
+    cldc/src/vm/share/memory/ClassInfoDesc.cpp
+    cldc/src/vm/share/memory/ClassParserStateDesc.cpp
+    cldc/src/vm/share/memory/CompiledMethodCache.cpp
+    cldc/src/vm/share/memory/CompiledMethodDesc.cpp
+    cldc/src/vm/share/memory/ConstantPoolDesc.cpp
+    cldc/src/vm/share/memory/EntryActivationDesc.cpp
+    cldc/src/vm/share/memory/ExecutionStackDesc.cpp
+    cldc/src/vm/share/memory/FarClassDesc.cpp
+    cldc/src/vm/share/memory/FinalizerConsDesc.cpp
+    cldc/src/vm/share/memory/InstanceClassDesc.cpp
+    cldc/src/vm/share/memory/JavaClassDesc.cpp
+    cldc/src/vm/share/memory/LargeObject.cpp
+    cldc/src/vm/share/memory/MetaObjTypeDesc.cpp
+    cldc/src/vm/share/memory/MethodDesc.cpp
+    cldc/src/vm/share/memory/MixedOopDesc.cpp
+    cldc/src/vm/share/memory/ObjectHeap.cpp
+    cldc/src/vm/share/memory/ObjNearDesc.cpp
+    cldc/src/vm/share/memory/OopDesc.cpp
+    cldc/src/vm/share/memory/ROMizerHashEntryDesc.cpp
+    cldc/src/vm/share/memory/StackmapGenerator.cpp
+    cldc/src/vm/share/memory/StackmapListDesc.cpp
+    cldc/src/vm/share/memory/SymbolDesc.cpp
+    cldc/src/vm/share/memoryprofiler/MemoryProfiler.cpp
+    cldc/src/vm/share/natives/jni.cpp
+    cldc/src/vm/share/natives/kni.cpp
+    cldc/src/vm/share/natives/KniUncommon.cpp
+    cldc/src/vm/share/natives/kvmcompat.cpp
+    cldc/src/vm/share/natives/Natives.cpp
     cldc/src/vm/share/natives/PCSLSocket.cpp
-    cldc/src/vm/share/utilities/PairHistogram.cpp
-    cldc/src/vm/share/runtime/Profiler.cpp
+    cldc/src/vm/share/natives/sni.cpp
+    cldc/src/vm/share/ROM/BinaryROM.cpp
+    cldc/src/vm/share/ROM/BytecodeOptimizer.cpp
+    cldc/src/vm/share/ROM/ConstantPoolRewriter.cpp
+    cldc/src/vm/share/ROM/MethodInvocationClosure.cpp
     cldc/src/vm/share/ROM/ROM.cpp
     cldc/src/vm/share/ROM/ROMBitSet.cpp
     cldc/src/vm/share/ROM/ROMClassPatternMatcher.cpp
@@ -307,69 +309,91 @@ add_executable(pjvm
     cldc/src/vm/share/ROM/ROMStructsWriter.cpp
     cldc/src/vm/share/ROM/ROMTools.cpp
     cldc/src/vm/share/ROM/ROMWriter.cpp
-    cldc/src/vm/share/handles/ROMizerHashEntry.cpp
-    cldc/src/vm/share/memory/ROMizerHashEntryDesc.cpp
-    cldc/src/vm/share/compiler/RegisterAllocator.cpp
-    cldc/src/vm/cpu/c/RegisterAllocator_c.cpp
-    cldc/src/vm/share/compiler/Relocation.cpp
-    cldc/src/vm/share/float/Remainder_pio2_kernel.cpp
-    cldc/src/vm/share/utilities/RemoteTracer.cpp
-    cldc/src/vm/share/runtime/Scheduler.cpp
     cldc/src/vm/share/ROM/SegmentedSourceROMWriter.cpp
-    cldc/src/vm/share/runtime/Semaphore.cpp
-    cldc/src/vm/share/handles/Signature.cpp
-    cldc/src/vm/share/float/Sine_kernel.cpp
-    cldc/src/vm/share/handles/SoftRefArray.cpp
     cldc/src/vm/share/ROM/SourceObjectWriter.cpp
     cldc/src/vm/share/ROM/SourceROMOptimizer.cpp
     cldc/src/vm/share/ROM/SourceROMWriter.cpp
-    cldc/src/vm/share/memory/StackmapGenerator.cpp
-    cldc/src/vm/share/handles/StackmapList.cpp
-    cldc/src/vm/share/memory/StackmapListDesc.cpp
-    cldc/src/vm/share/utilities/Stream.cpp
-    cldc/src/vm/share/handles/String.cpp
-    cldc/src/vm/share/handles/StringTable.cpp
-    cldc/src/vm/share/handles/Symbol.cpp
-    cldc/src/vm/share/memory/SymbolDesc.cpp
-    cldc/src/vm/share/handles/SymbolTable.cpp
-    cldc/src/vm/share/handles/Symbols.cpp
+    cldc/src/vm/share/runtime/BufferedFile.cpp
+    cldc/src/vm/share/runtime/ClassFileParser.cpp
+    cldc/src/vm/share/runtime/ClassPathAccess.cpp
+    cldc/src/vm/share/runtime/DeadlockFinder.cpp
+    cldc/src/vm/share/runtime/Field.cpp
+    cldc/src/vm/share/runtime/FileDecoder.cpp
+    cldc/src/vm/share/runtime/FilePath.cpp
+    cldc/src/vm/share/runtime/Frame.cpp
+    cldc/src/vm/share/runtime/HotRoutines0.cpp
+    cldc/src/vm/share/runtime/HotRoutines1.cpp
+    cldc/src/vm/share/runtime/Inflate.cpp
+    cldc/src/vm/share/runtime/JarFileParser.cpp
+    cldc/src/vm/share/runtime/JarFileUncommon.cpp
+    cldc/src/vm/share/runtime/JavaVTable.cpp
+    cldc/src/vm/share/runtime/JVM.cpp
+    cldc/src/vm/share/runtime/MethodTrap.cpp
+    cldc/src/vm/share/runtime/OS.cpp
+    cldc/src/vm/share/runtime/OsFile.cpp
+    cldc/src/vm/share/runtime/OsMemory.cpp
+    cldc/src/vm/share/runtime/Profiler.cpp
+    cldc/src/vm/share/runtime/Scheduler.cpp
+    cldc/src/vm/share/runtime/Semaphore.cpp
     cldc/src/vm/share/runtime/Synchronizer.cpp
     cldc/src/vm/share/runtime/SystemDictionary.cpp
-    cldc/src/vm/share/float/Tangent_kernel.cpp
     cldc/src/vm/share/runtime/Task.cpp
     cldc/src/vm/share/runtime/TaskContext.cpp
     cldc/src/vm/share/runtime/Thread.cpp
-    cldc/src/vm/share/handles/ThreadObj.cpp
     cldc/src/vm/share/runtime/Throw.cpp
     cldc/src/vm/share/runtime/Throwable.cpp
+    cldc/src/vm/share/runtime/WTKProfiler.cpp
+    cldc/src/vm/share/utilities/AccessFlags.cpp
+    cldc/src/vm/share/utilities/Arguments.cpp
+    cldc/src/vm/share/utilities/BytecodeHistogram.cpp
+    cldc/src/vm/share/utilities/BytecodePrintClosure.cpp
+    cldc/src/vm/share/utilities/CharacterStream.cpp
+    cldc/src/vm/share/utilities/ConstantTag.cpp
+    cldc/src/vm/share/utilities/Debug.cpp
+    cldc/src/vm/share/utilities/ErrorMessage.cpp
+    cldc/src/vm/share/utilities/EventLogger.cpp
+    cldc/src/vm/share/utilities/Generator.cpp
+    cldc/src/vm/share/utilities/GlobalDefinitions.cpp
+    cldc/src/vm/share/utilities/Globals.cpp
+    cldc/src/vm/share/utilities/PairHistogram.cpp
+    cldc/src/vm/share/utilities/RemoteTracer.cpp
+    cldc/src/vm/share/utilities/Stream.cpp
     cldc/src/vm/share/utilities/Timer.cpp
-    cldc/src/vm/share/handles/TypeArray.cpp
-    cldc/src/vm/share/handles/TypeArrayClass.cpp
-    cldc/src/vm/share/handles/TypeSymbol.cpp
-    cldc/src/vm/share/handles/Universe.cpp
-    cldc/src/vm/share/debugger/VMEvent.cpp
-    cldc/src/vm/share/compiler/VSFMergeTest.cpp
-    cldc/src/vm/share/compiler/Value.cpp
     cldc/src/vm/share/verifier/Verifier.cpp
     cldc/src/vm/share/verifier/VerifierFrame.cpp
     cldc/src/vm/share/verifier/VerifyMethodCodes.cpp
-    cldc/src/vm/share/compiler/VirtualStackFrame.cpp
-    cldc/src/vm/cpu/c/VirtualStackFrame_c.cpp
-    cldc/src/vm/share/runtime/WTKProfiler.cpp
-    cldc/src/vm/share/handles/WeakRefArray.cpp
-    cldc/src/vm/share/handles/WeakReference.cpp
-    cldc/src/vm/share/natives/jni.cpp
-    cldc/src/vm/share/natives/kni.cpp
-    cldc/src/vm/share/natives/kvmcompat.cpp
-    cldc/src/vm/share/natives/sni.cpp
+    ${PJVM_SOURCE_OS_FILES}
     #------- Library libcldc_vm end
     cldc/src/vm/share/natives/BSDSocket.cpp
     #------- cldc_vm exec start
     cldc/src/vm/share/runtime/jvmspi.cpp
-    cldc/src/vm/os/linux/Main_linux.cpp
     cldc/src/vm/share/ROM/ROMSkeleton.cpp
     cldc/src/vm/share/interpreter/OopMapsSkeleton.cpp
     cldc/src/vm/share/natives/NativesTable.cpp
+)
+
+if (DEFINED PICO)
+    set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/pico)
+endif()
+if (DEFINED LINUX)
+    set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/linux)
+endif()
+
+target_include_directories(pjvm PRIVATE
+                    cldc/src/include 
+                    cldc/src/vm/share/runtime
+                    cldc/src/vm/share/memory
+                    cldc/src/vm/share/utilities
+                    cldc/src/vm/share/natives
+                    cldc/src/vm/share/handles
+                    cldc/src/vm/cpu/c
+                    cldc/src/vm/share/ROM
+                    cldc/src/vm/share/interpreter
+                    cldc/src/vm/share/debugger
+                    cldc/src/vm/share/compiler
+                    cldc/src/vm/share/float
+                    cldc/src/vm/share/verifier
+                    ${PJVM_INCLUDE_OS_DIRS}
 )
 
 if (DEFINED PICO)
@@ -391,6 +415,23 @@ target_compile_definitions(pjvm PRIVATE
                         JVM_BUILD_VERSION="internal"
                         JVM_NAME="phoneME Feature VM"
 )
+
+if (DEFINED PICO)
+    target_compile_definitions(pjvm PRIVATE PICO ARM)
+    target_compile_options(pjvm PRIVATE -Wuninitialized 
+                                        -Wreturn-type 
+                                        -Wcomment 
+                                        -Wparentheses 
+                                        -Wformat 
+                                        -fstrict-aliasing
+                                        -fpermissive
+                                        -fno-gnu-keywords
+                                        -fno-operator-names
+                                        -fno-exceptions
+                                        -fno-optional-diags
+                                        -fno-rtti
+    )
+endif()
 
 if (DEFINED LINUX)
     target_compile_definitions(pjvm PRIVATE LINUX)
