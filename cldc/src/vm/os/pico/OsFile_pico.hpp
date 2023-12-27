@@ -26,9 +26,10 @@
 
 extern "C" {
 
-typedef FILE *OsFile_Handle;
+struct OsFile;
+typedef OsFile* OsFile_Handle;
 
 const char OsFile_separator_char      = '/';
-const char OsFile_path_separator_char = ';';
+const char OsFile_path_separator_char = ':';
 
 }

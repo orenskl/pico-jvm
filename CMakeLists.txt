@@ -22,7 +22,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
-add_custom_command(OUTPUT classes.zip
+add_custom_command(OUTPUT classes.jar
                    COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/classes
                    COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/classes -bootclasspath ${CMAKE_BINARY_DIR}/classes
                         ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/ConnectionNotFoundException.java
@@ -124,10 +124,12 @@ add_custom_command(OUTPUT classes.zip
                         ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldc/io/ResourceInputStream.java 
                         ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldc/util/Semaphore.java
                    COMMAND ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
-                   COMMAND cd ${CMAKE_BINARY_DIR}/classes.preverify
-                   COMMAND zip ARGS -0 -r ${CMAKE_BINARY_DIR}/classes.zip .             
+                   COMMAND cd ARGS ${CMAKE_BINARY_DIR}/classes.preverify
+                   COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/classes.jar .  
+                   COMMAND xxd ARGS -i ${CMAKE_BINARY_DIR}/classes.jar ${CMAKE_BINARY_DIR}/classes.jar.in 
+                   COMMAND sed ARGS -E \'s/\(.+\) \(_.+\)_classes_jar\(.+\)/static const \\1 _classes_jar\\3/g\' ${CMAKE_BINARY_DIR}/classes.jar.in >${CMAKE_BINARY_DIR}/classes.jar.inc                       
 )
-add_custom_target(classes ALL DEPENDS classes.zip)
+add_custom_target(classes ALL DEPENDS classes.jar)
 
 if (DEFINED PICO)
     set(PJVM_SOURCE_OS_FILES 
@@ -149,6 +151,7 @@ if (DEFINED LINUX)
         cldc/src/vm/os/linux/OsMisc_linux.cpp
         cldc/src/vm/os/linux/OsSocket_linux.cpp
         cldc/src/vm/os/linux/Main_linux.cpp
+        cldc/src/vm/share/runtime/jvmspi.cpp
     )
 endif()
 
@@ -366,14 +369,15 @@ add_executable(pjvm
     #------- Library libcldc_vm end
     cldc/src/vm/share/natives/BSDSocket.cpp
     #------- cldc_vm exec start
-    cldc/src/vm/share/runtime/jvmspi.cpp
     cldc/src/vm/share/ROM/ROMSkeleton.cpp
     cldc/src/vm/share/interpreter/OopMapsSkeleton.cpp
     cldc/src/vm/share/natives/NativesTable.cpp
 )
+add_dependencies(pjvm classes)
 
 if (DEFINED PICO)
-    set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/pico)
+    set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/pico
+                             ${CMAKE_BINARY_DIR})
 endif()
 if (DEFINED LINUX)
     set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/linux)
@@ -417,7 +421,7 @@ target_compile_definitions(pjvm PRIVATE
 )
 
 if (DEFINED PICO)
-    target_compile_definitions(pjvm PRIVATE PICO ARM)
+    target_compile_definitions(pjvm PRIVATE PICO ARM PICO_DEBUG_MALLOC=1)
     target_compile_options(pjvm PRIVATE -Wuninitialized 
                                         -Wreturn-type 
                                         -Wcomment 

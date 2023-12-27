@@ -1,3 +1,6 @@
 {
     "C_Cpp.doxygen.generatedStyle": "/**",
+    "files.associations": {
+        "*.inc": "cpp"
+    },
 }

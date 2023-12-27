@@ -30,6 +30,7 @@
 #include "GlobalDefinitions.hpp"
 #include "Globals.hpp"
 
+#include "Debug.hpp"
 #include "jvm.h"
 #include "jvmspi.h"
 #include "sni.h"
@@ -52,23 +53,64 @@ void JVMSPI_Exit(int code) {
   ::jvm_exit(code);
 }
 
+void JVMSPI_DisplayUsage(char* message) {
+}
+
+char *JVMSPI_GetSystemProperty(const char *property_name) {
+  return NULL;
+}
+
+int JVMSPI_HandleOutOfMemory(const int isolate_id,
+                             const int limit,
+                             const int reserve,
+                             const int available,
+                             const int alloc_size,
+                             const int flags,
+                             int * exit_code) {
+  GUARANTEE(flags & JVMSPI_IGNORE, "JVMSPI_IGNORE must be supprted");
+  return JVMSPI_IGNORE;
+}
+
+int JVMSPI_HandleUncaughtException(const int isolate_id,
+                                   const char * exception_class_name,
+                                   const int exception_class_name_length,
+                                   const char * message,
+                                   const int flags,
+                                   int * exit_code) {
+  GUARANTEE(flags & JVMSPI_IGNORE, "JVMSPI_IGNORE must be supprted");
+  return JVMSPI_IGNORE;
+}
+
+void JVMSPI_FreeSystemProperty(const char * /*prop_value*/) {
+  // do nothing
+}
+
+jboolean JVMSPI_CheckExit(void) {
+  return KNI_TRUE;
+}
+
 int main( void ) {
   int code = 0;
 
   stdio_usb_init();
   sleep_ms(5000);
 
+  VerboseClassLoading = true;
+  TraceClassLoading = true;
+  Verbose = true;
+  TraceHeapSize = true;
+
   // Call this before any other Jvm_ functions.
   JVM_Initialize();
 
-  JVM_SetConfig(JVM_CONFIG_HEAP_CAPACITY,100*1024);
+  JVM_SetConfig(JVM_CONFIG_HEAP_CAPACITY,170*1024);
 
   if (JVM_GetConfig(JVM_CONFIG_SLAVE_MODE) == KNI_FALSE) {
     // Run the VM in regular mode -- JVM_Start won't return until
     // the VM completes execution.
-    code = JVM_Start(NULL, "Main", 0, NULL);
+    code = JVM_Start((char *)"classes.jar:main.jar", (char *)"Main", 0, NULL);
   } else {
-    JVM_Start(NULL, "Main", 0, NULL);
+    JVM_Start((char *)"classes.jar:main.jar", (char *)"Main", 0, NULL);
 
     for (;;) {
       long timeout = JVM_TimeSlice();

@@ -43,3 +43,6 @@
 // The Generic port does not support adjustable memory chunks for
 // implementing the Java heap.
 #define SUPPORTS_ADJUSTABLE_MEMORY_CHUNK 0
+
+#define SUPPORTS_DIRECTORIES 0
+

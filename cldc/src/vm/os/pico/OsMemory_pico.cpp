@@ -34,6 +34,8 @@
 extern "C" {
 #endif
 
+static int total = 0;
+
 void *OsMemory_allocate(size_t size) {
 	/* 
 	 * Allocates memory blocks in memory pool (heap)
@@ -41,6 +43,8 @@ void *OsMemory_allocate(size_t size) {
 	 * malloc returns a void pointer to the allocated space.  
 	 * if there is insufficient memory available, it returns NULL (0)
 	 */
+	total += size;
+	printf("alloc, total = %d\n",total);
   return malloc(size);
 }
 
