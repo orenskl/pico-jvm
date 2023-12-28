@@ -48,6 +48,7 @@
 #include "Field.hpp"
 #include "String.hpp"
 #include "SymbolTable.hpp"
+#include "Compiler.hpp"
 
 HANDLE_CHECK(InstanceClass, is_instance_class())
 

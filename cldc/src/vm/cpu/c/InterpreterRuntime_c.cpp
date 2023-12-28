@@ -32,6 +32,7 @@
 
 #include "Oop.hpp"
 #include "InstanceClass.hpp"
+#include "Frame.hpp"
 
 extern "C" {
 

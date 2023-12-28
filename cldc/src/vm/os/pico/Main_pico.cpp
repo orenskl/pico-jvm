@@ -103,7 +103,7 @@ int main( void ) {
   // Call this before any other Jvm_ functions.
   JVM_Initialize();
 
-  JVM_SetConfig(JVM_CONFIG_HEAP_CAPACITY,170*1024);
+  JVM_SetConfig(JVM_CONFIG_HEAP_CAPACITY,184040*1024);
 
   if (JVM_GetConfig(JVM_CONFIG_SLAVE_MODE) == KNI_FALSE) {
     // Run the VM in regular mode -- JVM_Start won't return until

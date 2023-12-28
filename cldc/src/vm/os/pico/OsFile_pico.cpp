@@ -33,7 +33,7 @@
 #include "OsFile_pico.hpp"
 #include "Debug.hpp"
 
-#include "classes.jar.inc"
+#include "main.jar.inc"
 
 extern "C" {
 
@@ -45,9 +45,9 @@ typedef struct {
 
 const file_info fs_image_table[2] = {
   {
-    .name   = "classes.jar",
-    .data   = _classes_jar,
-    .length = _classes_jar_len
+    .name   = "main.jar",
+    .data   = _main_jar,
+    .length = _main_jar_len
   },
   {
     .name = NULL
@@ -102,7 +102,6 @@ int OsFile_flush(OsFile_Handle handle) {
 
 size_t OsFile_read(OsFile_Handle handle,
                    void *buffer, size_t size, size_t count) {
-  //printf("OsFile_read %d\n",size * count);
   size_t done = 0;
   size_t req = size * count;
   char * p = (char*)buffer;
@@ -124,12 +123,10 @@ size_t OsFile_write(OsFile_Handle handle,
 }
 
 long OsFile_length(OsFile_Handle handle) {
-  printf("OsFile_length %d\n",handle);
   return handle->length;
 }
 
 bool OsFile_exists(const PathChar *fn_filename) {
-  printf("OsFile_exists %s\n",fn_filename);
   int i;
   for (i=0; ; i++) {
     if (fs_image_table[i].name == NULL) {
@@ -144,7 +141,6 @@ bool OsFile_exists(const PathChar *fn_filename) {
 }
 
 long OsFile_seek(OsFile_Handle handle, long offset, int origin) {
-  printf("OsFile_seek %d\n",handle);
   switch (origin) {
   case SEEK_CUR:
     handle->pos += offset;

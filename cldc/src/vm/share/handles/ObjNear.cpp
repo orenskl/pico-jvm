@@ -33,6 +33,7 @@
 #include "ObjNear.hpp"
 #include "OopVisitor.hpp"
 #include "TypeArray.hpp"
+#include "Universe.hpp"
 
 HANDLE_CHECK(ObjNear, is_obj_near())
 

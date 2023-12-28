@@ -30,6 +30,7 @@
 #include "Debug.hpp"
 #include "Stream.hpp"
 #include "OopDesc.hpp"
+#include "ObjectHeap.hpp"
 
 // Oop map constants
 enum {

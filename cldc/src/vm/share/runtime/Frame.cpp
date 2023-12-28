@@ -39,6 +39,7 @@
 #include "jvm.h"
 #include "ExecutionStack.hpp"
 #include "EntryActivation.hpp"
+#include "OopDesc.inline.hpp"
 
 extern "C" {
   void interpreter_deoptimization_entry();

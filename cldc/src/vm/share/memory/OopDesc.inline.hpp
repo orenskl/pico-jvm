@@ -27,6 +27,8 @@
 #ifndef _OOPDESC_INLINE_HPP_
 #define _OOPDESC_INLINE_HPP_
 
+#include "TypeArrayClass.hpp"
+
 void OopDesc::map_oops_do(jubyte* map, void do_oop(OopDesc**)) {
   // Note: each value in the map is between [0, 0x80] (inclusive).
   // This is a little waste of space, but rarely we have more than 127

@@ -1,9 +1,4 @@
-cmake_minimum_required(VERSION 3.22.1)
-
-#
-# The preverify tool is not built from source
-#
-# add_subdirectory(tools/preverify)
+cmake_minimum_required(VERSION 3.22)
 
 find_package(Java REQUIRED)
 
@@ -19,6 +14,11 @@ if (DEFINED PICO)
     # initialize the Raspberry Pi Pico SDK
     pico_sdk_init()
 endif()
+
+ExternalProject_Add(romgen SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/romgen 
+                           CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=$<CONFIG>
+                           INSTALL_COMMAND cmake -E echo "Skipping install step."
+)
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 

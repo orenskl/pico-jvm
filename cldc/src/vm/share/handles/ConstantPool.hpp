@@ -42,6 +42,7 @@
 #include "FieldType.hpp"
 #include "Array.hpp"
 #include "ConstantPoolDesc.hpp"
+#include "ROM.hpp"
 
 #define cp_check(b) \
     if (!(b)) { \

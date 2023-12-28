@@ -27,6 +27,8 @@
 #ifndef _STACKUTILS_HPP_
 #define _STACKUTILS_HPP_
 
+#include "Allocation.hpp"
+
 class GlobalSaver : public StackObj {
 protected:
   int  _value;

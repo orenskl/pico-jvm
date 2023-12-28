@@ -54,6 +54,7 @@
 #include "jvm.h"
 #include "OS.hpp"
 #include "Debug.hpp"
+#include "StackUtils.hpp"
 
 #include <time.h>
 

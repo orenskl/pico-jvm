@@ -37,6 +37,7 @@
 #include "String.hpp"
 #include "ObjArray.hpp"
 #include "TypeArray.hpp"
+#include "ROM.hpp"
 
 void StackLock::set_waiters(Thread* thread) {
   GUARANTEE(!thread->is_null(), "Sanity");

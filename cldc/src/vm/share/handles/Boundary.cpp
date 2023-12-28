@@ -33,6 +33,7 @@
 #include "Oop.hpp"
 #include "Boundary.hpp"
 #include "OopVisitor.hpp"
+#include "Universe.hpp"
 
 HANDLE_CHECK(Boundary, is_boundary())
 

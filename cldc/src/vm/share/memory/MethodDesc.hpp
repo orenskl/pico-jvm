@@ -35,6 +35,7 @@
 #include "ObjectHeap.hpp"
 #include "AccessFlags.hpp"
 #include "ConstantPoolDesc.hpp"
+#include "ROM.hpp"
 
 class MethodVariablePart {
 public:
