@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 find_package(Java REQUIRED)
+include(ExternalProject)
 
 if (DEFINED PICO)
     # initialize the SDK based on PICO_SDK_PATH
@@ -16,13 +17,14 @@ if (DEFINED PICO)
 endif()
 
 ExternalProject_Add(romgen SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/romgen 
-                           CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=$<CONFIG>
-                           INSTALL_COMMAND cmake -E echo "Skipping install step."
+                           CMAKE_ARGS -DROMGEN_INSTALL_DIR=${CMAKE_BINARY_DIR} 
+                                      -DCMAKE_BUILD_TYPE:STRING=$<CONFIG>
+                           USES_TERMINAL_BUILD TRUE
 )
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
-add_custom_command(OUTPUT classes.jar
+add_custom_command(OUTPUT ROMImage.cpp
                    COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/classes
                    COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/classes -bootclasspath ${CMAKE_BINARY_DIR}/classes
                         ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/cldc1.1/javax/microedition/io/ConnectionNotFoundException.java
@@ -125,11 +127,19 @@ add_custom_command(OUTPUT classes.jar
                         ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/share/com/sun/cldc/util/Semaphore.java
                    COMMAND ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
                    COMMAND cd ARGS ${CMAKE_BINARY_DIR}/classes.preverify
-                   COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/classes.jar .  
-                   COMMAND xxd ARGS -i ${CMAKE_BINARY_DIR}/classes.jar ${CMAKE_BINARY_DIR}/classes.jar.in 
-                   COMMAND sed ARGS -E \'s/\(.+\) \(_.+\)_classes_jar\(.+\)/static const \\1 _classes_jar\\3/g\' ${CMAKE_BINARY_DIR}/classes.jar.in >${CMAKE_BINARY_DIR}/classes.jar.inc                       
+                   COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/classes.jar .
+                   COMMAND cd ARGS ${CMAKE_BINARY_DIR}
+                   COMMAND ${CMAKE_BINARY_DIR}/romgen 
+                                    -cp ${CMAKE_BINARY_DIR}/classes.jar
+                                    +RewriteROMConstantPool
+                                    +EnableAllROMOptimizations
+                                    +GenerateGNUCode 
+                                    =HeapCapacity16M
+                                    -romconfig ${CMAKE_SOURCE_DIR}/cldc/src/vm/cldctest_rom.cfg
+                                    -romincludepath ${CMAKE_SOURCE_DIR}/cldc/src/vm
+                                    -romize
 )
-add_custom_target(classes ALL DEPENDS classes.jar)
+add_custom_target(classes ALL DEPENDS ROMImage.cpp romgen)
 
 if (DEFINED PICO)
     set(PJVM_SOURCE_OS_FILES 
@@ -369,8 +379,8 @@ add_executable(pjvm
     #------- Library libcldc_vm end
     cldc/src/vm/share/natives/BSDSocket.cpp
     #------- cldc_vm exec start
-    cldc/src/vm/share/ROM/ROMSkeleton.cpp
-    cldc/src/vm/share/interpreter/OopMapsSkeleton.cpp
+    ${CMAKE_BINARY_DIR}/ROMImage.cpp
+    cldc/src/vm/share/interpreter/OopMaps.cpp
     cldc/src/vm/share/natives/NativesTable.cpp
 )
 add_dependencies(pjvm classes)
@@ -410,7 +420,7 @@ if (DEFINED PICO)
 endif()
 
 target_compile_definitions(pjvm PRIVATE
-                        SUPPORTS_MONOTONIC_CLOCK 
+                        SUPPORTS_MONOTONIC_CLOCK=0
                         GCC 
                         REQUIRES_JVMCONFIG_H=1 
                         HARDWARE_LITTLE_ENDIAN=1
@@ -418,41 +428,32 @@ target_compile_definitions(pjvm PRIVATE
                         JVM_RELEASE_VERSION="1.1"
                         JVM_BUILD_VERSION="internal"
                         JVM_NAME="phoneME Feature VM"
+                        ROMIZING=1
+)
+
+set(PJVM_COMPILE_OPTIONS -Wuninitialized 
+                         -Wreturn-type 
+                         -Wcomment 
+                         -Wparentheses 
+                         -Wformat
+                         -Wno-narrowing
+                         -fstrict-aliasing
+                         -fpermissive
+                         -fno-gnu-keywords
+                         -fno-operator-names
+                         -fno-exceptions
+                         -fno-optional-diags
+                         -fno-rtti
 )
 
 if (DEFINED PICO)
     target_compile_definitions(pjvm PRIVATE PICO ARM PICO_DEBUG_MALLOC=1)
-    target_compile_options(pjvm PRIVATE -Wuninitialized 
-                                        -Wreturn-type 
-                                        -Wcomment 
-                                        -Wparentheses 
-                                        -Wformat 
-                                        -fstrict-aliasing
-                                        -fpermissive
-                                        -fno-gnu-keywords
-                                        -fno-operator-names
-                                        -fno-exceptions
-                                        -fno-optional-diags
-                                        -fno-rtti
-    )
+    target_compile_options(pjvm PRIVATE ${PJVM_COMPILE_OPTIONS})
 endif()
 
 if (DEFINED LINUX)
     target_compile_definitions(pjvm PRIVATE LINUX)
-    target_compile_options(pjvm PRIVATE -m32 
-                                       -Wuninitialized 
-                                       -Wreturn-type 
-                                       -Wcomment 
-                                       -Wparentheses 
-                                       -Wformat 
-                                       -fstrict-aliasing
-                                       -fpermissive
-                                       -fno-gnu-keywords
-                                       -fno-operator-names
-                                       -fno-exceptions
-                                       -fno-optional-diags
-                                       -fno-rtti
-    )
+    target_compile_options(pjvm PRIVATE -m32 ${PJVM_COMPILE_OPTIONS})
     target_link_options(pjvm PRIVATE -m32)
     target_link_libraries(pjvm m pthread)
 endif()

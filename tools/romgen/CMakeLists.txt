@@ -111,6 +111,8 @@ add_executable(romgen
     ../../cldc/src/vm/share/handles/WeakRefArray.cpp
     ../../cldc/src/vm/share/handles/WeakReference.cpp
     ../../cldc/src/vm/share/interpreter/Bytecodes.cpp
+    ../../cldc/src/vm/share/interpreter/GPSkeleton.cpp
+    ../../cldc/src/vm/share/interpreter/OopMaps.cpp
     ../../cldc/src/vm/share/interpreter/InterpreterRuntime.cpp
     ../../cldc/src/vm/share/memory/Allocation.cpp
     ../../cldc/src/vm/share/memory/ArrayClassDesc.cpp
@@ -143,6 +145,7 @@ add_executable(romgen
     ../../cldc/src/vm/share/natives/kvmcompat.cpp
     ../../cldc/src/vm/share/natives/Natives.cpp
     ../../cldc/src/vm/share/natives/PCSLSocket.cpp
+    ../../cldc/src/vm/share/natives/ReflectNatives.cpp
     ../../cldc/src/vm/share/natives/sni.cpp
     ../../cldc/src/vm/share/ROM/BinaryROM.cpp
     ../../cldc/src/vm/share/ROM/BytecodeOptimizer.cpp
@@ -224,7 +227,6 @@ add_executable(romgen
     ../../cldc/src/vm/share/runtime/jvmspi.cpp
     ../../cldc/src/vm/share/natives/BSDSocket.cpp
     ../../cldc/src/vm/share/ROM/ROMSkeleton.cpp
-    ../../cldc/src/vm/share/interpreter/OopMapsSkeleton.cpp
     ../../cldc/src/vm/share/natives/NativesTable.cpp
 )
 
@@ -248,6 +250,7 @@ target_include_directories(romgen PRIVATE
 target_compile_definitions(romgen PRIVATE
                 -DSUPPORTS_MONOTONIC_CLOCK=0
                 -DAZZERT 
+                -D_DEBUG
                 -DGCC
                 -DLINUX
                 -DREQUIRES_JVMCONFIG_H=1
@@ -277,4 +280,5 @@ target_compile_options(romgen PRIVATE -m32
 )
 target_link_options(romgen PRIVATE -m32)
 
+install(TARGETS romgen DESTINATION ${ROMGEN_INSTALL_DIR})
 

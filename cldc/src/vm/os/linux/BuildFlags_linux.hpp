@@ -65,3 +65,7 @@
 #ifndef SUPPORTS_MONOTONIC_CLOCK
 #error "SUPPORTS_MONOTONIC_CLOCK must be defined in jvm.make"
 #endif
+
+#define ENABLE_BKPT_FATAL
+
+#define ENABLE_HISTOGRAMS

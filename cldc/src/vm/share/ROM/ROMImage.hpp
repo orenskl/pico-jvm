@@ -35,6 +35,7 @@
  */
 
 #ifndef _ROM_IMAGE_HPP_
+#define _ROM_IMAGE_HPP_
 
 #ifdef __cplusplus
 extern "C" {

@@ -11,9 +11,16 @@
             "PICO_SDK_PATH":"/home/oren/projects/pico-sdk"
           }
         },
-        "Linux": {
-          "short": "Linux",
+        "Linux Release": {
+          "short": "Linux Release",
           "buildType": "Release",
+          "settings": {
+            "LINUX":""
+          }
+        },
+        "Linux Debug": {
+          "short": "Linux Debug",
+          "buildType": "Debug",
           "settings": {
             "LINUX":""
           }

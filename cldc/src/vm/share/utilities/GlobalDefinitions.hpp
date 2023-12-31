@@ -49,8 +49,14 @@
 
 #include "kni_md.h"
 #include "kni.h"
-#include "GlobalDefinitions_gcc.hpp"
 #include "ROMImage.hpp"
+#include "GlobalDefinitions_gcc.hpp"
+#ifdef LINUX
+  #include "Globals_linux.hpp"
+#endif
+#ifdef PICO
+  #include "Globals_pico.hpp"
+#endif
 
 /*
  * Rename internal classes to avoid conflicts with
