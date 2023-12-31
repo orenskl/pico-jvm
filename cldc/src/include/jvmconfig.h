@@ -682,7 +682,7 @@
  *       in THUMB mode.
  */
 
-#define ENABLE_THUMB_VM               0  /* VM default: BuildFlags.hpp */
+#define ENABLE_THUMB_VM               1  /* VM default: BuildFlags.hpp */
 
 /*
  * ENABLE_THUMB_COMPILER

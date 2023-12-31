@@ -95,15 +95,10 @@ int main( void ) {
   stdio_usb_init();
   sleep_ms(5000);
 
-  VerboseClassLoading = true;
-  TraceClassLoading = true;
-  Verbose = true;
-  TraceHeapSize = true;
-
   // Call this before any other Jvm_ functions.
   JVM_Initialize();
 
-  JVM_SetConfig(JVM_CONFIG_HEAP_CAPACITY,184040*1024);
+  JVM_SetConfig(JVM_CONFIG_HEAP_CAPACITY,64*1024);
 
   if (JVM_GetConfig(JVM_CONFIG_SLAVE_MODE) == KNI_FALSE) {
     // Run the VM in regular mode -- JVM_Start won't return until

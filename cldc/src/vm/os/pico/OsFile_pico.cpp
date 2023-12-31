@@ -114,7 +114,6 @@ static OsFile file_handles[10];
 OsFile_Handle OsFile_open(const PathChar *fn_filename, const char *mode) {
   int i;
 
-  printf("OsFile_open %s\n",fn_filename);
   for (i=0; ; i++) {
     if (fs_image_table[i].name == NULL) {
       // reached end of table -- file not found

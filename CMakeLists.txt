@@ -447,7 +447,7 @@ set(PJVM_COMPILE_OPTIONS -Wuninitialized
 )
 
 if (DEFINED PICO)
-    target_compile_definitions(pjvm PRIVATE PICO ARM PICO_DEBUG_MALLOC=1)
+    target_compile_definitions(pjvm PRIVATE PICO ARM)
     target_compile_options(pjvm PRIVATE ${PJVM_COMPILE_OPTIONS})
 endif()
 

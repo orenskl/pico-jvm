@@ -337,7 +337,7 @@ bool ROM::link_static(OopDesc** ram_persistent_handles, int num_handles) {
   // (8) Method entry initialization (for handling -comp flag)
   Method::update_rom_default_entries();
 
-#if ARM || HITACHI_SH
+#if (ARM || HITACHI_SH) && ENABLE_INTERPRETER_GENERATOR
   // (9) Copy this so that ARM has fast access to its value
   _rom_constant_pool_fast = (int*)_rom_constant_pool;
 #endif
