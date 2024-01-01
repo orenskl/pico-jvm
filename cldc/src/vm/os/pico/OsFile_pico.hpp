@@ -24,6 +24,9 @@
  * information or have any questions.
  */
 
+#ifndef _OSFILE_PICO_HPP_
+#define _OSFILE_PICO_HPP_
+
 extern "C" {
 
 struct OsFile;
@@ -33,3 +36,5 @@ const char OsFile_separator_char      = '/';
 const char OsFile_path_separator_char = ':';
 
 }
+
+#endif /* _OSFILE_PICO_HPP_ */
