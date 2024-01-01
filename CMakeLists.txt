@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
 find_package(Java REQUIRED)
-include(UseJava)
 include(ExternalProject)
 
 if (DEFINED PICO)
@@ -464,5 +463,14 @@ if (DEFINED LINUX)
 endif()
 
 set(CMAKE_JAVA_COMPILE_FLAGS -source 1.4 -target 1.4)
-add_jar(main test/Main.java)
+add_custom_command(OUTPUT main.jar.bin 
+                   COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/main.dir
+                   COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/main.dir -bootclasspath ${CMAKE_BINARY_DIR}/classes.jar
+                        ${CMAKE_SOURCE_DIR}/test/Main.java
+                   COMMAND cd ARGS ${CMAKE_BINARY_DIR}/main.dir
+                   COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/main.jar .
+                   COMMAND ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ARGS ${CMAKE_BINARY_DIR}/main.jar ${CMAKE_BINARY_DIR}/main.jar.bin
+)
+add_custom_target(main ALL DEPENDS main.jar.bin)
+
 add_test(Sanity ${CMAKE_BINARY_DIR}/pjvm -cp ${CMAKE_BINARY_DIR}/main.jar Main)
