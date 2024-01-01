@@ -74,6 +74,7 @@
 #include "PairHistogram.hpp"
 #include "SourceROMWriter.hpp"
 #include "AssemblerLoopFlags.hpp"
+#include "BinaryROMWriter.hpp"
 
 int          JVM::_exit_code;
 bool         JVM::_is_started;

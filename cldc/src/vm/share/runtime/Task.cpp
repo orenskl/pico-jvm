@@ -38,6 +38,8 @@
 #include "Globals.hpp"
 
 #include "Task.hpp"
+#include "FilePath.hpp"
+#include "ROM.hpp"
 
 HANDLE_CHECK(Task, is_task())
 

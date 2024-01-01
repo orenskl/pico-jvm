@@ -30,6 +30,15 @@
 #include "GlobalDefinitions.hpp"
 #include "Globals.hpp"
 
+#include "ROM.hpp"
+#include "ObjArrayClass.hpp"
+#include "Task.hpp"
+#include "StackmapGenerator.hpp"
+#include "FilePath.hpp"
+#include "OS.hpp"
+#include "jvm.h"
+#include "TypeArrayClass.hpp"
+
 #if USE_BINARY_IMAGE_LOADER
 ROMBundle* ROMBundle::_current;
 

@@ -33,6 +33,7 @@
 #define _ROM_HPP_
 
 #include "ObjArray.hpp"
+#include "Universe.hpp"
 
 #if USE_BINARY_IMAGE_LOADER
 class ROMBundle {

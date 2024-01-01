@@ -148,6 +148,8 @@ add_executable(romgen
     ../../cldc/src/vm/share/natives/ReflectNatives.cpp
     ../../cldc/src/vm/share/natives/sni.cpp
     ../../cldc/src/vm/share/ROM/BinaryROM.cpp
+#    ../../cldc/src/vm/share/ROM/BinaryObjectWriter.cpp
+#    ../../cldc/src/vm/share/ROM/BinaryROMWriter.cpp
     ../../cldc/src/vm/share/ROM/BytecodeOptimizer.cpp
     ../../cldc/src/vm/share/ROM/ConstantPoolRewriter.cpp
     ../../cldc/src/vm/share/ROM/MethodInvocationClosure.cpp

@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 find_package(Java REQUIRED)
+include(UseJava)
 include(ExternalProject)
 
 if (DEFINED PICO)
@@ -10,6 +11,8 @@ if (DEFINED PICO)
 endif()
 
 project(pjvm)
+
+include(CTest) 
 
 if (DEFINED PICO)
     # initialize the Raspberry Pi Pico SDK
@@ -307,6 +310,8 @@ add_executable(pjvm
     cldc/src/vm/share/natives/PCSLSocket.cpp
     cldc/src/vm/share/natives/sni.cpp
     cldc/src/vm/share/ROM/BinaryROM.cpp
+#    cldc/src/vm/share/ROM/BinaryObjectWriter.cpp
+#    cldc/src/vm/share/ROM/BinaryROMWriter.cpp
     cldc/src/vm/share/ROM/BytecodeOptimizer.cpp
     cldc/src/vm/share/ROM/ConstantPoolRewriter.cpp
     cldc/src/vm/share/ROM/MethodInvocationClosure.cpp
@@ -457,3 +462,7 @@ if (DEFINED LINUX)
     target_link_options(pjvm PRIVATE -m32)
     target_link_libraries(pjvm m pthread)
 endif()
+
+set(CMAKE_JAVA_COMPILE_FLAGS -source 1.4 -target 1.4)
+add_jar(main test/Main.java)
+add_test(Sanity ${CMAKE_BINARY_DIR}/pjvm -cp ${CMAKE_BINARY_DIR}/main.jar Main)

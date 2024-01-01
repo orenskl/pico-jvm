@@ -43,6 +43,8 @@
 #include "Method.hpp"
 #include "OS.hpp"
 #include "jvm.h"
+#include "Task.hpp"
+#include "String.hpp"
 
 #ifndef PRODUCT
 #define LAST_CLASS_LOADED_BUF_SIZE 1024

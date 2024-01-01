@@ -44,6 +44,7 @@
 #include "OS.hpp"
 #include "ROMWriter.hpp"
 #include "String.hpp"
+#include "Task.hpp"
 
 /*====================================================================
  * Comment:

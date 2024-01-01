@@ -41,6 +41,8 @@
 #include "ArrayClass.hpp"
 #include "ObjArrayClass.hpp"
 #include "Signature.hpp"
+#include "ROMOptimizer.hpp"
+#include "ROMWriter.hpp"
 
 extern "C" {
   extern jlong bailout_counters[Bytecodes::number_of_java_codes];

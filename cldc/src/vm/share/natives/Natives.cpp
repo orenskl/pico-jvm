@@ -57,6 +57,7 @@
 #include "Semaphore.hpp"
 #include "StackUtils.hpp"
 #include "JarFileParser.hpp"
+#include "BinaryROMWriter.hpp"
 
 // Special VM natives
 

@@ -38,6 +38,8 @@
 #include "Universe.hpp"
 #include "TaskDesc.hpp"
 #include "MixedOop.hpp"
+#include "ObjArray.hpp"
+#include "TypeArray.hpp"
 
 class Task: public MixedOop {
 public:

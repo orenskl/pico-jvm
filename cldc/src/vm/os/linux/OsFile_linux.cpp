@@ -36,8 +36,12 @@
 
 #include "OsFile_linux.hpp"
 #include "jvm.h"
+#include "OsFile.hpp"
+#include "Stream.hpp"
+#include "Debug.hpp"
 
 #include <sys/stat.h>
+#include <sys/mman.h>
 
 #ifdef __cplusplus
 extern "C" {
