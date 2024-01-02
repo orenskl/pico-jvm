@@ -34,7 +34,7 @@ jobs:
           path: pico-sdk
 
     - name: Configure CMake
-      run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -DPICO=TRUE -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -DPICO=TRUE -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
