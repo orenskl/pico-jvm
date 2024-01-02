@@ -40,9 +40,14 @@ jobs:
     - name: Build Linux
       run: cmake --build ${{github.workspace}}/build.linux --config ${{env.BUILD_TYPE}}
 
+    - name: Test Linux
+      working-directory: ${{github.workspace}}/build.linux
+      run: ctest -C ${{env.BUILD_TYPE}}
+ 
     - name: Configure Pico build
       run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -DPICO=TRUE -B ${{github.workspace}}/build.pico -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
 
-    - name: Build
+    - name: Build Pico
       run: cmake --build ${{github.workspace}}/build.pico --config ${{env.BUILD_TYPE}}
+
       
