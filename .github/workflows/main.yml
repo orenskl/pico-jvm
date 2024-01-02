@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Checkout the project
-    - uses: actions/checkout@v4
+      uses: actions/checkout@v4
     
     - name: Checkout the Pico SDK
       uses: actions/checkout@v4
