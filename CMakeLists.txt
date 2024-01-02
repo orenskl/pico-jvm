@@ -473,4 +473,9 @@ add_custom_command(OUTPUT main.jar.bin
 )
 add_custom_target(main ALL DEPENDS main.jar.bin classes)
 
-add_test(Sanity ${CMAKE_BINARY_DIR}/pjvm -cp ${CMAKE_BINARY_DIR}/main.jar Main)
+#
+# Tests currently run only on Linux
+#
+if (DEFINED LINUX)
+    add_test(Sanity ${CMAKE_BINARY_DIR}/pjvm -cp ${CMAKE_BINARY_DIR}/main.jar Main)
+endif()    
