@@ -16,6 +16,11 @@ jobs:
     steps:
     - name: Install build tools
       run: sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential gcc-multilib g++-multilib
+
+    - name: Setup Java 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
       
     - name: Checkout the project
       uses: actions/checkout@v4
