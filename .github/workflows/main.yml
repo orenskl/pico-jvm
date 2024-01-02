@@ -32,6 +32,7 @@ jobs:
           repository: raspberrypi/pico-sdk
           ref: 1.5.1
           path: pico-sdk
+          submodules: true
 
     - name: Configure CMake
       run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -DPICO=TRUE -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
