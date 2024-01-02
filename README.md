@@ -25,7 +25,7 @@ If all goes well you should end up with a `pjvm.uf2` file in your `build` direct
 
 Lets say we have a simple hello world application :
 
-```
+```java
 class Main {
     public static void main(String[] args) {
         System.out.println("Hello, World!"); 
@@ -35,7 +35,9 @@ class Main {
 
 The name of the class `Main` is currently fixed as the first class that is loaded by the VM. Compiler the class :
 
-`javac -source 1.4 -target 1.4 -d main.dir -bootclasspath ../pico-jvm/build/classes.jar Main.java`
+```
+javac -source 1.4 -target 1.4 -d main.dir -bootclasspath ../pico-jvm/build/classes.jar Main.java
+```
 
 Make sure your `-bootclasspath` is correct and should point to the `classes.jar` that is built earilier
 
@@ -48,10 +50,14 @@ jar -cfM0 ../main.jar .
 
 Now we need to wrap the JAR with a header so we can run it on the Pi Pico :
 
-`tools/wrapjar.sh main.jar main.jar.bin`
+```
+tools/wrapjar.sh main.jar main.jar.bin
+```
 
 The `wrapjar` script is located in the `tools` directory of this project. Now we can flash the application to address `0x10100000` using `picotool` :
 
-`picotool load build/main.jar.bin --offset 10100000`
+```
+picotool load build/main.jar.bin --offset 10100000
+```
 
 Reboot your Pi Pico and you should see `Hello, World!` on your terminal
