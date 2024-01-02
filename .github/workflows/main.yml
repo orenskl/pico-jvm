@@ -34,9 +34,15 @@ jobs:
           path: pico-sdk
           submodules: true
 
-    - name: Configure CMake
-      run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -DPICO=TRUE -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
+    - name: Configure Linux build
+      run: cmake -DLINUX=TRUE -B ${{github.workspace}}/build.linux -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
+
+    - name: Build Linux
+      run: cmake --build ${{github.workspace}}/build.linux --config ${{env.BUILD_TYPE}}
+
+    - name: Configure Pico build
+      run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -DPICO=TRUE -B ${{github.workspace}}/build.pico -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build.pico --config ${{env.BUILD_TYPE}}
       
