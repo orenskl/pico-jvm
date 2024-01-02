@@ -1,0 +1,53 @@
+name: Main workflow for pico-jvm
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Install build tools
+      run: sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential gcc-multilib g++-multilib ninja-build
+
+    - name: Setup Java 8
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '8'
+      
+    - name: Checkout the project
+      uses: actions/checkout@v4
+    
+    - name: Checkout the Pico SDK
+      uses: actions/checkout@v4
+      with:
+          repository: raspberrypi/pico-sdk
+          ref: 1.5.1
+          path: pico-sdk
+          submodules: true
+
+    - name: Configure Linux build
+      run: cmake -DLINUX=TRUE -B ${{github.workspace}}/build.linux -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
+
+    - name: Build Linux
+      run: cmake --build ${{github.workspace}}/build.linux --config ${{env.BUILD_TYPE}}
+
+    - name: Test Linux
+      working-directory: ${{github.workspace}}/build.linux
+      run: ctest -C ${{env.BUILD_TYPE}}
+ 
+    - name: Configure Pico build
+      run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -DPICO=TRUE -B ${{github.workspace}}/build.pico -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
+
+    - name: Build Pico
+      run: cmake --build ${{github.workspace}}/build.pico --config ${{env.BUILD_TYPE}}
+
+      

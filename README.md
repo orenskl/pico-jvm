@@ -8,7 +8,16 @@ Currently the JVM support [CLDC 1.1](https://docs.oracle.com/javame/config/cldc/
 
 ## Building
 
-This project can be built on Ubuntu 22 as the build machine, after cloning it cd into it and run the the usual CMake commands :
+This project can be built on Ubuntu 22 as the build machine, please install the following packages :
+
+```
+sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential gcc-multilib g++-multilib ninja-build
+```
+
+
+You will also need JDK 8 (Yes 8) for this, please install it and make sure it is your default Java installation.
+
+After cloning the project cd into it and run the the usual CMake commands :
 
 ```
 mkdir build
