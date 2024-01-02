@@ -471,6 +471,6 @@ add_custom_command(OUTPUT main.jar.bin
                    COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/main.jar .
                    COMMAND ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ARGS ${CMAKE_BINARY_DIR}/main.jar ${CMAKE_BINARY_DIR}/main.jar.bin
 )
-add_custom_target(main ALL DEPENDS main.jar.bin)
+add_custom_target(main ALL DEPENDS main.jar.bin classes)
 
 add_test(Sanity ${CMAKE_BINARY_DIR}/pjvm -cp ${CMAKE_BINARY_DIR}/main.jar Main)
