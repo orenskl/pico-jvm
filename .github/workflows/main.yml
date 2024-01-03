@@ -49,5 +49,10 @@ jobs:
 
     - name: Build Pico
       run: cmake --build ${{github.workspace}}/build.pico --config ${{env.BUILD_TYPE}}
-
+      
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: ${{github.workspace}}/build.pico/pjvm-*.gz
       
