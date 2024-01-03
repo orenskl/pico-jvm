@@ -1,6 +1,11 @@
 #!/bin/bash
 
 #
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) Oren Sokoler (https://github.com/orenskl)
+#
+
+#
 # Append a header to a JAR file, the header continas the following fields :
 #
 #           +--------------------------+

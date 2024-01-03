@@ -1,3 +1,8 @@
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) Oren Sokoler (https://github.com/orenskl)
+#
+
 cmake_minimum_required(VERSION 3.22.1)
 
 project(preverify)
