@@ -9,7 +9,7 @@ if (DEFINED PICO)
     include(pico_sdk_import.cmake)
 endif()
 
-project(pjvm)
+project(pjvm VERSION 0.0.1)
 
 include(CTest) 
 
@@ -429,7 +429,7 @@ target_compile_definitions(pjvm PRIVATE
                         REQUIRES_JVMCONFIG_H=1 
                         HARDWARE_LITTLE_ENDIAN=1
                         HOST_LITTLE_ENDIAN=1
-                        JVM_RELEASE_VERSION="1.1"
+                        JVM_RELEASE_VERSION="${PROJECT_VERSION}"
                         JVM_BUILD_VERSION="internal"
                         JVM_NAME="phoneME Feature VM"
                         ROMIZING=1
@@ -453,6 +453,10 @@ set(PJVM_COMPILE_OPTIONS -Wuninitialized
 if (DEFINED PICO)
     target_compile_definitions(pjvm PRIVATE PICO ARM)
     target_compile_options(pjvm PRIVATE ${PJVM_COMPILE_OPTIONS})
+    add_custom_command(TARGET pjvm POST_BUILD
+                        COMMAND cp ${CMAKE_BINARY_DIR}/pjvm.uf2 ${CMAKE_BINARY_DIR}/pjvm-${PROJECT_VERSION}.uf2
+                        COMMAND gzip ${CMAKE_BINARY_DIR}/pjvm-${PROJECT_VERSION}.uf2
+    )
 endif()
 
 if (DEFINED LINUX)
