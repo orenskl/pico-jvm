@@ -12,7 +12,7 @@ Currently the JVM support [CLDC 1.1](https://docs.oracle.com/javame/config/cldc/
 
 To run a Java application on the [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/) you will need to flash the Java virtual machine itself and than flash the Java application at the address `0x10100000`.
 
-The Java VM can be dowloaded from the [Releases](https://github.com/orenskl/pico-jvm/releases) page of this project. You can download the gzipped UF2 file, unpack it and flash it with the standard `picotool`.
+The Java VM can be dowloaded from the [Releases](https://github.com/orenskl/pico-jvm/releases) page of this project. You can download the gzipped UF2 file, unpack it and flash it with the standard [picotool(https://github.com/raspberrypi/picotool).
 
 Lets say we have a simple hello world application :
 
