@@ -20,6 +20,7 @@ endif()
 
 ExternalProject_Add(romgen SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/romgen 
                            CMAKE_ARGS -DROMGEN_INSTALL_DIR=${CMAKE_BINARY_DIR} 
+                                      -DROMGEN_VERSION=${PROJECT_VERSION}
                                       -DCMAKE_BUILD_TYPE:STRING=$<CONFIG>
                            USES_TERMINAL_BUILD TRUE
 )
@@ -390,8 +391,7 @@ add_executable(pjvm
 add_dependencies(pjvm classes)
 
 if (DEFINED PICO)
-    set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/pico
-                             ${CMAKE_BINARY_DIR})
+    set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/pico ${CMAKE_BINARY_DIR})
 endif()
 if (DEFINED LINUX)
     set(PJVM_INCLUDE_OS_DIRS cldc/src/vm/os/linux)
@@ -431,7 +431,7 @@ target_compile_definitions(pjvm PRIVATE
                         HOST_LITTLE_ENDIAN=1
                         JVM_RELEASE_VERSION="${PROJECT_VERSION}"
                         JVM_BUILD_VERSION="internal"
-                        JVM_NAME="phoneME Feature VM"
+                        JVM_NAME="Pico JVM"
                         ROMIZING=1
 )
 
@@ -455,7 +455,7 @@ if (DEFINED PICO)
     target_compile_options(pjvm PRIVATE ${PJVM_COMPILE_OPTIONS})
     add_custom_command(TARGET pjvm POST_BUILD
                         COMMAND cp ${CMAKE_BINARY_DIR}/pjvm.uf2 ${CMAKE_BINARY_DIR}/pjvm-${PROJECT_VERSION}.uf2
-                        COMMAND gzip ${CMAKE_BINARY_DIR}/pjvm-${PROJECT_VERSION}.uf2
+                        COMMAND gzip -f ${CMAKE_BINARY_DIR}/pjvm-${PROJECT_VERSION}.uf2
     )
 endif()
 

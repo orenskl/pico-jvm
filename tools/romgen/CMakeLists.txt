@@ -258,9 +258,9 @@ target_compile_definitions(romgen PRIVATE
                 -DREQUIRES_JVMCONFIG_H=1
                 -DHARDWARE_LITTLE_ENDIAN=1
                 -DHOST_LITTLE_ENDIAN=1 
-                -DJVM_RELEASE_VERSION='"1.1"'
-                -DJVM_BUILD_VERSION='"internal"'
-                -DJVM_NAME='"phoneME Feature VM"'                 
+                JVM_RELEASE_VERSION="${ROMGEN_VERSION}"
+                JVM_BUILD_VERSION="internal"
+                JVM_NAME="Pico JVM"
 )
 
 target_compile_options(romgen PRIVATE -m32 
