@@ -5,7 +5,7 @@
 
 cmake_minimum_required(VERSION 3.22)
 
-find_package(Java REQUIRED)
+find_package(Java 1.8 EXACT REQUIRED)
 include(ExternalProject)
 
 if (DEFINED PICO)
