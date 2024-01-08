@@ -23,6 +23,8 @@
 
 #include "OS.hpp"
 
+#include "pico/time.h"
+
 static bool             ticker_stopping = false;
 static bool             ticker_running = false;
 static int              sock_initialized = 0;
@@ -52,27 +54,31 @@ jlong offset() {
 }
 
 #if SUPPORTS_MONOTONIC_CLOCK
-jlong Os::monotonic_time_millis() {
+jlong Os::monotonic_time_millis() 
+{
   /*
    * Get the monotonic time in milliseconds from some unspecified starting
    * point. This clock must be monotonic and must have resolution and read
    * time not lower than that of Os::java_time_millis().
    */
-  return 0;
+  return time_us_64() / 1000;
 }
 #endif
 
-jlong Os::java_time_millis() {
+jlong Os::java_time_millis() 
+{
   /*
    * Get the current system time, unit: millisecond, count time from
    * Jan. 1st, 1970. Need reduce the OS dependent offset time value, if
    * the offset exist
    */
-  return 0;
+  return time_us_64() / 1000;
 }
 
-void Os::sleep(jlong ms) {
+void Os::sleep(jlong ms) 
+{
   /* let the current process sleep for ms seconds */
+  sleep_ms(ms);
 }
 
 

@@ -3,4 +3,8 @@
     "files.associations": {
         "*.inc": "cpp"
     },
+    "java.project.sourcePaths": [
+        "cldc/src/javaapi/device",
+        "examples/src"
+    ],
 }
