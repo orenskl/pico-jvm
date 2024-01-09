@@ -490,6 +490,7 @@ if (DEFINED LINUX)
 endif()
 
 add_custom_command(OUTPUT main.jar.bin 
+                   DEPENDS test/Main.java
                    COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/main.dir
                    COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/main.dir -bootclasspath ${CMAKE_BINARY_DIR}/classes.jar
                         ${CMAKE_SOURCE_DIR}/test/Main.java
