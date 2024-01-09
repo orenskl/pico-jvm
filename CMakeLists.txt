@@ -34,6 +34,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
 if (DEFINED PICO)
     set(PJVM_DEVICE_CLASSES ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/device/pico/hardware/GPIOPin.java)
+    set(PJVM_DEVICE_)
 endif()
 
 set(PJVM_CLASSES 
@@ -145,7 +146,6 @@ add_custom_command(OUTPUT ROMImage.cpp
                    DEPENDS ${PJVM_CLASSES}
                    COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/classes
                    COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/classes -bootclasspath ${CMAKE_BINARY_DIR}/classes ${PJVM_CLASSES}
-                   COMMAND javadoc ARGS -d ${CMAKE_BINARY_DIR}/doc ${PJVM_DEVICE_CLASSES}
                    COMMAND ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
                    COMMAND cd ARGS ${CMAKE_BINARY_DIR}/classes.preverify
                    COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/classes.jar .
@@ -161,6 +161,14 @@ add_custom_command(OUTPUT ROMImage.cpp
                                     -romize
 )
 add_custom_target(classes ALL DEPENDS ROMImage.cpp romgen)
+
+if (DEFINED PICO)
+    add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/doc
+                       DEPENDS ${PJVM_DEVICE_CLASSES}
+                       COMMAND javadoc ARGS -d ${CMAKE_BINARY_DIR}/doc ${PJVM_DEVICE_CLASSES}
+    )
+    add_custom_target(docs ALL DEPENDS ${CMAKE_BINARY_DIR}/doc)
+endif()
 
 if (DEFINED PICO)
     set(PJVM_SOURCE_OS_FILES 
