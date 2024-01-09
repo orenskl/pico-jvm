@@ -505,7 +505,7 @@ install(FILES ${CMAKE_BINARY_DIR}/pjvm.uf2
         DESTINATION .
         RENAME pjvm-${PROJECT_VERSION}.uf2
 )
-install(FILES ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify
+install(PROGRAMS ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify
         DESTINATION bin
 )
 install(DIRECTORY ${CMAKE_BINARY_DIR}/doc
