@@ -30,6 +30,8 @@
 #include "GlobalDefinitions.hpp"
 #include "Globals.hpp"
 
+#include "ErrorMessage.hpp"
+
 #if !USE_VERBOSE_ERROR_MSG
 char ErrorMessage::_buf[4];
 #endif

@@ -3,9 +3,9 @@
       "default": "Pico",
       "description": "Build Type Selection",
       "choices": {
-        "Pico": {
-          "short": "Pico",
-          "buildType": "Release",
+        "Pico Release": {
+          "short": "Pico Release",
+          "buildType": "MinSizeRel",
           "settings": {
             "PICO": "",
             "PICO_SDK_PATH":"/home/oren/projects/pico-sdk"
@@ -13,7 +13,7 @@
         },
         "Linux Release": {
           "short": "Linux Release",
-          "buildType": "Release",
+          "buildType": "MinSizeRel",
           "settings": {
             "LINUX":""
           }

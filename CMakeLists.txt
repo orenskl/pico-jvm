@@ -30,11 +30,8 @@ ExternalProject_Add(romgen SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/romgen
                            USES_TERMINAL_BUILD TRUE
 )
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O2")
-
 if (DEFINED PICO)
     set(PJVM_DEVICE_CLASSES ${CMAKE_SOURCE_DIR}/cldc/src/javaapi/device/pico/hardware/GPIOPin.java)
-    set(PJVM_DEVICE_)
 endif()
 
 set(PJVM_CLASSES 
@@ -460,6 +457,7 @@ target_compile_definitions(pjvm PRIVATE
                         JVM_BUILD_VERSION="internal"
                         JVM_NAME="Pico JVM"
                         ROMIZING=1
+                        PRODUCT                      
 )
 
 set(PJVM_COMPILE_OPTIONS -Wuninitialized 
@@ -527,4 +525,3 @@ set(CPACK_PACKAGE_FILE_NAME pjvm-${PROJECT_VERSION})
 if (DEFINED PICO)
     include(CPack)
 endif()
-
