@@ -35,6 +35,8 @@
 #ifndef _ERRORMESSAGE_HPP_
 #define _ERRORMESSAGE_HPP_
 
+#include "Allocation.hpp"
+
 class ErrorMessage : public AllStatic {
  public:
   static char* get(ErrorMsgTag err) {
