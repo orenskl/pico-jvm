@@ -43,6 +43,9 @@ char *JVMSPI_GetSystemProperty(const char *property_name) {
   return NULL;
 }
 
+void JVMSPI_SetSystemProperty(const char* propName, const char* value) {
+}
+
 int JVMSPI_HandleOutOfMemory(const int isolate_id,
                              const int limit,
                              const int reserve,

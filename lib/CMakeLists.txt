@@ -421,7 +421,6 @@ target_include_directories(jvm PRIVATE
 )
 
 target_compile_definitions(jvm PRIVATE
-                        SUPPORTS_MONOTONIC_CLOCK=1
                         GCC 
                         REQUIRES_JVMCONFIG_H=1 
                         HARDWARE_LITTLE_ENDIAN=1
@@ -449,14 +448,18 @@ set(JVM_COMPILE_OPTIONS -Wuninitialized
 )
 
 if (${TARGET} STREQUAL PICO)
-    target_compile_definitions(jvm PRIVATE PICO ARM)
-    target_compile_options(jvm PRIVATE ${JVM_COMPILE_OPTIONS})
+    target_compile_definitions(jvm PRIVATE PICO ARM SUPPORTS_MONOTONIC_CLOCK=1)
+    target_compile_options(jvm PRIVATE -mcpu=cortex-m0plus -mthumb ${JVM_COMPILE_OPTIONS})
 endif()
 
 if (${TARGET} STREQUAL LINUX)
-    target_compile_definitions(jvm PRIVATE LINUX)
+    target_compile_definitions(jvm PRIVATE LINUX SUPPORTS_MONOTONIC_CLOCK=0)
     target_compile_options(jvm PRIVATE -m32 ${JVM_COMPILE_OPTIONS})
 endif()
 
 install(TARGETS jvm DESTINATION ${LIBJVM_INSTALL_DIR})
+install(FILES ${CMAKE_BINARY_DIR}/classes.jar DESTINATION ${LIBJVM_INSTALL_DIR})
+if (${TARGET} STREQUAL PICO)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/doc DESTINATION ${LIBJVM_INSTALL_DIR})
+endif()
 

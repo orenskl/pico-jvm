@@ -221,16 +221,16 @@ add_executable(romgen
     ../../src/vm/share/verifier/VerifyMethodCodes.cpp
     ../../src/vm/os/linux/JVM_linux.cpp
     ../../src/vm/os/linux/MemoryMonitorMd_linux.cpp
-    ../../src/vm/os/linux/OS_linux.cpp
     ../../src/vm/os/linux/OsFile_linux.cpp
     ../../src/vm/os/linux/OsMemory_linux.cpp
     ../../src/vm/os/linux/OsMisc_linux.cpp
     ../../src/vm/os/linux/OsSocket_linux.cpp
-    ../../src/vm/os/linux/Main_linux.cpp
     ../../src/vm/share/runtime/jvmspi.cpp
     ../../src/vm/share/natives/BSDSocket.cpp
     ../../src/vm/share/ROM/ROMSkeleton.cpp
     ../../src/vm/share/natives/NativesTable.cpp
+    ../../../src/linux/Main.cpp
+    ../../../src/linux/OS.cpp
 )
 
 target_include_directories(romgen PRIVATE
