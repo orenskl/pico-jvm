@@ -65,7 +65,7 @@ static int __cdecl pair_compare_entries(const void* e1, const void* e2) {
   return delta < 0 ? -1 : (delta == 0 ? 0 : 1);
 }
 
-#ifdef LINUX
+#ifdef __linux__
 #define FLL "%14lld"
 #else
 #define FLL "%14I64d"

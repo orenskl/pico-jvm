@@ -436,7 +436,7 @@ void ROMOptimizer::read_config_file(JVM_SINGLE_ARG_TRAPS) {
 }
 
 void ROMOptimizer::read_config_file(const JvmPathChar* config_file JVM_TRAPS) {
-#if defined(WIN32) || defined(LINUX)
+#if defined(WIN32) || defined(__linux__)
   char buff[1024];
   OsFile_Handle f = OsFile_open(config_file, "r");
   if (f == NULL) {
@@ -948,7 +948,7 @@ void ROMOptimizer::process_config_line(char* s JVM_TRAPS) {
 }
 
 void ROMOptimizer::include_config_file(const char *config_file JVM_TRAPS) {
-#if defined(WIN32) || defined(LINUX)
+#if defined(WIN32) || defined(__linux__)
 
 #if USE_UNICODE_FOR_FILENAMES
   JvmPathChar fn_config_file[1024+1];

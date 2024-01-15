@@ -251,17 +251,9 @@ target_include_directories(romgen PRIVATE
 )
 
 target_compile_definitions(romgen PRIVATE
-                -DSUPPORTS_MONOTONIC_CLOCK=0
-                -DAZZERT 
-                -D_DEBUG
-                -DGCC
-                -DLINUX
-                -DREQUIRES_JVMCONFIG_H=1
-                -DHARDWARE_LITTLE_ENDIAN=1
-                -DHOST_LITTLE_ENDIAN=1 
+                AZZERT 
+                _DEBUG
                 JVM_RELEASE_VERSION="${ROMGEN_VERSION}"
-                JVM_BUILD_VERSION="internal"
-                JVM_NAME="Pico JVM"
 )
 
 target_compile_options(romgen PRIVATE -m32 

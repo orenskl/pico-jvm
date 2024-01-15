@@ -24,6 +24,6 @@ add_executable(preverify
         src/sys_support.c    
 )
 
-target_compile_definitions(preverify PRIVATE UNIX LINUX JAVAVERIFY TRIMMED ARCH=i386)
+target_compile_definitions(preverify PRIVATE UNIX JAVAVERIFY TRIMMED ARCH=i386)
 target_include_directories(preverify PRIVATE src)
 target_compile_options(preverify PRIVATE)

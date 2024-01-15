@@ -62,9 +62,7 @@
 #endif
 
 // The default Linux port supports monotonic clock
-#ifndef SUPPORTS_MONOTONIC_CLOCK
-#error "SUPPORTS_MONOTONIC_CLOCK must be defined in jvm.make"
-#endif
+#define SUPPORTS_MONOTONIC_CLOCK 0
 
 #define ENABLE_BKPT_FATAL
 

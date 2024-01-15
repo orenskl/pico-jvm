@@ -51,7 +51,7 @@
 #include "kni.h"
 #include "ROMImage.hpp"
 #include "GlobalDefinitions_gcc.hpp"
-#ifdef LINUX
+#ifdef __linux__
   #include "Globals_linux.hpp"
 #endif
 #ifdef PICO
