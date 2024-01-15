@@ -51,14 +51,14 @@ typedef long int32_t;
 #endif    /* !defined(_ILP32) && !defined(_LP64) */
 #endif /* SOLARIS2 */
 
-#ifdef LINUX
+#ifdef __linux__
 #ifndef       _UINT64_T
 #define       _UINT64_T
 typedef unsigned long long uint64_t;
 #define _UINT32_T
 typedef unsigned long uint32_t;
 #endif
-#endif /* LINUX */
+#endif /* __linux__ */
 
 #ifdef DARWIN
 #ifndef       _UINT64_T
@@ -149,7 +149,7 @@ extern void ll2str(int64_t a, char *s, char *limit);
 #include <sys/byteorder.h>
 #endif
 
-#ifdef LINUX
+#ifdef __linux__
 #include <asm/byteorder.h>
 #endif
 

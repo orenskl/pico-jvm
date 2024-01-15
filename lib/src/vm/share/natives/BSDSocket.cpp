@@ -54,7 +54,7 @@ extern "C" {
 
 #if USE_BSD_SOCKET
 
-#if defined(LINUX) || defined (CYGWIN)
+#if defined(__linux__) || defined (CYGWIN)
 #define USE_UNISTD_SOCKETS 1
 #else
 #if defined(WIN32) || defined(UNDER_CE)
@@ -83,7 +83,7 @@ extern "C" {
 #endif
 #define init_sockets()
 #define closesocket(x)          jvm_close(x)
-#endif // LINUX
+#endif // __linux__
 
 #if USE_WINSOCK_SOCKETS
 #undef FIELD_OFFSET

@@ -64,10 +64,10 @@ target_include_directories(pjvm PRIVATE
 )
 
 if (${TARGET} STREQUAL PICO)
-    target_compile_definitions(pjvm PRIVATE GCC PICO ARM SUPPORTS_MONOTONIC_CLOCK=1)
+    target_compile_definitions(pjvm PRIVATE PICO)
 endif()
 if (${TARGET} STREQUAL LINUX)
-    target_compile_definitions(pjvm PRIVATE GCC LINUX SUPPORTS_MONOTONIC_CLOCK=0 PRODUCT)
+    target_compile_definitions(pjvm PRIVATE PRODUCT)
     target_compile_options(pjvm PRIVATE -m32 -fpermissive)
     target_link_options(pjvm PRIVATE -m32)
 endif()

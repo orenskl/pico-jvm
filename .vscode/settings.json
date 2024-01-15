@@ -7,4 +7,7 @@
         "cldc/src/javaapi/device",
         "examples/src"
     ],
+    "cSpell.words": [
+        "Pico"
+    ],
 }

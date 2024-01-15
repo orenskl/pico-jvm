@@ -70,8 +70,6 @@
 
 // AZZERT                 Add assertion code (debug build)
 
-// LINUX                  Target OS is Linux
-
 // CROSS_GENERATOR        In an loopgen or romgen build
 
 // PRODUCT                In a product target build
@@ -86,7 +84,7 @@
 #ifndef _BUILDFLAGS_HPP_
 #define _BUILDFLAGS_HPP_
 
-#ifdef LINUX
+#ifdef __linux__
     #include "BuildFlags_linux.hpp"
 #endif
 #ifdef PICO
@@ -95,6 +93,11 @@
 
 #ifndef CROSS_GENERATOR
 #define CROSS_GENERATOR 0
+#endif
+
+/* Currently we support only LE targets (Linux x86, Raspberry Pi Pico) */
+#ifndef HARDWARE_LITTLE_ENDIAN
+#define HARDWARE_LITTLE_ENDIAN 1
 #endif
 
 //============================================================================
@@ -852,14 +855,14 @@
 #endif
 
 // Some system header files defines ARM to be blank, which doesn't
-// work with the way we use macros (e.g., #if ARM && LINUX). So
+// work with the way we use macros (e.g., #if ARM && __linux__). So
 // let's change it to something more pleasant.
 #ifdef ARM
 #  undef ARM
 #  define ARM 1
 #endif
 
-#if defined(LINUX) && defined(ARM) && !ENABLE_INTERPRETER_GENERATOR && !CROSS_GENERATOR
+#if defined(__linux__) && defined(ARM) && !ENABLE_INTERPRETER_GENERATOR && !CROSS_GENERATOR
 #  define ARM_EXECUTABLE 1
 #else
 #  define ARM_EXECUTABLE 0

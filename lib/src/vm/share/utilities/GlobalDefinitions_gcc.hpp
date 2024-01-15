@@ -37,7 +37,7 @@
 
 # include <ctype.h>
 # include <string.h>
-#if (defined(LINUX) || defined(PICO)) && !defined(SOLARIS)
+#if (defined(__linux__) || defined(PICO)) && !defined(SOLARIS)
 # include <stdint.h>
 #endif
 # include <stdarg.h>
@@ -178,7 +178,7 @@ const jlong max_jlong = ~min_jlong;
 //---------------------------------------------------------------------------
 
 // Portability macros
-#if defined(LINUX) || defined(PICO)
+#if defined(__linux__) || defined(PICO)
 #define __cdecl
 #define _cdecl
 #endif

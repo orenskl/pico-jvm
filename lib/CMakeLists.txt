@@ -420,17 +420,7 @@ target_include_directories(jvm PRIVATE
                     ${JVM_INCLUDE_OS_DIRS}
 )
 
-target_compile_definitions(jvm PRIVATE
-                        GCC 
-                        REQUIRES_JVMCONFIG_H=1 
-                        HARDWARE_LITTLE_ENDIAN=1
-                        HOST_LITTLE_ENDIAN=1
-                        JVM_RELEASE_VERSION="${LIBJVM_VERSION}"
-                        JVM_BUILD_VERSION="internal"
-                        JVM_NAME="Pico JVM"
-                        ROMIZING=1
-                        PRODUCT                      
-)
+target_compile_definitions(jvm PRIVATE JVM_RELEASE_VERSION="${LIBJVM_VERSION}" ROMIZING=1 PRODUCT)
 
 set(JVM_COMPILE_OPTIONS -Wuninitialized 
                          -Wreturn-type 
@@ -448,12 +438,11 @@ set(JVM_COMPILE_OPTIONS -Wuninitialized
 )
 
 if (${TARGET} STREQUAL PICO)
-    target_compile_definitions(jvm PRIVATE PICO ARM SUPPORTS_MONOTONIC_CLOCK=1)
+    target_compile_definitions(jvm PRIVATE PICO)
     target_compile_options(jvm PRIVATE -mcpu=cortex-m0plus -mthumb ${JVM_COMPILE_OPTIONS})
 endif()
 
 if (${TARGET} STREQUAL LINUX)
-    target_compile_definitions(jvm PRIVATE LINUX SUPPORTS_MONOTONIC_CLOCK=0)
     target_compile_options(jvm PRIVATE -m32 ${JVM_COMPILE_OPTIONS})
 endif()
 

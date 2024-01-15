@@ -243,7 +243,7 @@ const char * name_for(BasicType type) {
 
 void global_breakpoint() {
 #if defined(__GNUC__)
-#ifdef LINUX
+#ifdef __linux__
     BREAKPOINT;
 #else
     // IMPL_NOTE: move this into OS class

@@ -96,7 +96,7 @@ typedef void *  stackp_t;
 int     sysThreadBootstrap(sys_thread_t **, void *);
 void     sysThreadInitializeSystemThreads(void);
 
-#ifndef LINUX
+#ifndef __linux__
 int     sysThreadCreate(long, uint_t flags, void *(*)(void *),
             sys_thread_t **, void *);
 #else

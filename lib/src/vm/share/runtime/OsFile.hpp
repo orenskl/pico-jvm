@@ -31,7 +31,7 @@
 #ifndef _OSFILE_HPP_
 #define _OSFILE_HPP_
 
-#ifdef LINUX
+#ifdef __linux__
   #include "OsFile_linux.hpp"
 #endif
 #ifdef PICO

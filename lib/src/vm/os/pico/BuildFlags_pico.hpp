@@ -27,3 +27,7 @@
 
 #define SUPPORTS_DIRECTORIES 0
 
+#define SUPPORTS_MONOTONIC_CLOCK 1
+
+#define ARM 1
+
