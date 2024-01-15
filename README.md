@@ -114,7 +114,7 @@ After cloning the project cd into it and run the the usual CMake commands :
 ```
 mkdir build
 cd build
-cmake -DPICO=TRUE -DPICO_SDK_PATH=/home/oren/projects/pico-sdk .. -G Ninja
+cmake -DPICO_SDK_PATH=/home/oren/projects/pico-sdk .. -G Ninja
 cmake --build .
 ```
 
