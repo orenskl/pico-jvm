@@ -72,18 +72,16 @@ if (${TARGET} STREQUAL LINUX)
     target_link_options(pjvm PRIVATE -m32)
 endif()
 
+target_link_libraries(pjvm jvm)
+target_link_directories(pjvm PRIVATE ${CMAKE_BINARY_DIR})
+
 if (${TARGET} STREQUAL PICO)
     # Add pico_stdlib library which aggregates commonly used features
-    target_link_libraries(pjvm jvm pico_stdlib)
-    target_link_directories(pjvm PRIVATE ${CMAKE_BINARY_DIR})
+    target_link_libraries(pjvm pico_stdlib)
     # create map/bin/hex/uf2 file in addition to ELF.
     pico_add_extra_outputs(pjvm)
     pico_enable_stdio_usb(pjvm 1)
     pico_enable_stdio_uart(pjvm 0)
-endif()
-if (${TARGET} STREQUAL LINUX)
-    target_link_libraries(pjvm jvm)
-    target_link_directories(pjvm PRIVATE ${CMAKE_BINARY_DIR})
 endif()
 
 add_custom_command(OUTPUT main.jar.bin 
