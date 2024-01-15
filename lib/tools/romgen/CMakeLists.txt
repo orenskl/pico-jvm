@@ -252,23 +252,7 @@ target_include_directories(romgen PRIVATE
 
 target_compile_definitions(romgen PRIVATE AZZERT _DEBUG JVM_RELEASE_VERSION="${ROMGEN_VERSION}")
 
-target_compile_options(romgen PRIVATE -m32 
-    -Wuninitialized
-    -fexpensive-optimizations
-    -fomit-frame-pointer
-    -Wreturn-type
-    -Wcomment
-    -Wparentheses
-    -Wformat
-    -fstrict-aliasing
-    -Wno-narrowing
-    -fno-gnu-keywords
-    -fno-operator-names
-    -fno-exceptions
-    -fno-optional-diags
-    -fno-rtti
-    -fpermissive
-)
+target_compile_options(romgen PRIVATE -m32)
 target_link_options(romgen PRIVATE -m32)
 
 install(TARGETS romgen DESTINATION ${ROMGEN_INSTALL_DIR})

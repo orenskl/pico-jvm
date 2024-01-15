@@ -68,7 +68,7 @@ if (${TARGET} STREQUAL PICO)
 endif()
 if (${TARGET} STREQUAL LINUX)
     target_compile_definitions(pjvm PRIVATE PRODUCT)
-    target_compile_options(pjvm PRIVATE -m32 -fpermissive)
+    target_compile_options(pjvm PRIVATE -m32)
     target_link_options(pjvm PRIVATE -m32)
 endif()
 

@@ -222,23 +222,23 @@ extern const int            _rom_modified_class_bitmap_row_size;
 #endif
 
 #if MSW_FIRST_FOR_DOUBLE
-#define ROM_DOUBLE(msw, lsw) msw, lsw
+#define ROM_DOUBLE(msw, lsw) (int)msw, (int)lsw
 #else
-#define ROM_DOUBLE(msw, lsw) lsw, msw
+#define ROM_DOUBLE(msw, lsw) (int)lsw, (int)msw
 #endif
 
 #if MSW_FIRST_FOR_LONG
-#define ROM_LONG(msw, lsw) msw, lsw
+#define ROM_LONG(msw, lsw) (int)msw, (int)lsw
 #else
-#define ROM_LONG(msw, lsw) lsw, msw
+#define ROM_LONG(msw, lsw) (int)lsw, (int)msw
 #endif
 
 /* ROM_BL = big- or little-endian */
 
 #if HARDWARE_LITTLE_ENDIAN
-#define ROM_BL(be_word, le_word, comment)  (le_word)
+#define ROM_BL(be_word, le_word, comment)  ((int)le_word)
 #else
-#define ROM_BL(be_word, le_word, comment)  (be_word)
+#define ROM_BL(be_word, le_word, comment)  ((int)be_word)
 #endif
 
 #if ENABLE_JAZELLE && ENABLE_NATIVE_ORDER_REWRITING
@@ -251,12 +251,12 @@ extern const int            _rom_modified_class_bitmap_row_size;
 
 #if HARDWARE_LITTLE_ENDIAN
 #if ENABLE_NATIVE_ORDER_REWRITING
-#define ROM_BLX(be_word, le_word_java, le_word_native, comment) (le_word_native)
+#define ROM_BLX(be_word, le_word_java, le_word_native, comment) ((int)le_word_native)
 #else
-#define ROM_BLX(be_word, le_word_java, le_word_native, comment) (le_word_java)
+#define ROM_BLX(be_word, le_word_java, le_word_native, comment) ((int)le_word_java)
 #endif
 #else 
-#define ROM_BLX(be_word, le_word_java, le_word_native, comment) (be_word)
+#define ROM_BLX(be_word, le_word_java, le_word_native, comment) ((int)be_word)
 #endif
 /*
  * The following #define's are used to product the name of a global

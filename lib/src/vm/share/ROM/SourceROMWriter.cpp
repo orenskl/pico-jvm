@@ -971,16 +971,16 @@ void SourceROMWriter::write_reference(BlockType type, int offset,
 }
 
 void SourceROMWriter::write_plain_int(jint value, FileStream *stream) {
-  char buff[20];
-  jvm_sprintf(buff, "0x%08x", value);
-  GUARANTEE(jvm_strlen(buff) == 10, "sprintf check");
+  char buff[32];
+  jvm_sprintf(buff, "(int)0x%08x", value);
+  GUARANTEE(jvm_strlen(buff) == 15, "sprintf check");
   stream->print(buff);
 }
 
 void SourceROMWriter::write_int(jint value, FileStream *stream) {
-  char buff[20];
-  jvm_sprintf(buff, "     0x%08x", value);
-  GUARANTEE(jvm_strlen(buff) == 15, "sprintf check");
+  char buff[32];
+  jvm_sprintf(buff, "     (int)0x%08x", value);
+  GUARANTEE(jvm_strlen(buff) == 20, "sprintf check");
   stream->print(buff);
 }
 

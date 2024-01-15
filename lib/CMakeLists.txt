@@ -422,20 +422,7 @@ target_include_directories(jvm PRIVATE
 
 target_compile_definitions(jvm PRIVATE JVM_RELEASE_VERSION="${LIBJVM_VERSION}" ROMIZING=1 PRODUCT)
 
-set(JVM_COMPILE_OPTIONS -Wuninitialized 
-                         -Wreturn-type 
-                         -Wcomment 
-                         -Wparentheses 
-                         -Wformat
-                         -Wno-narrowing
-                         -fstrict-aliasing
-                         -fpermissive
-                         -fno-gnu-keywords
-                         -fno-operator-names
-                         -fno-exceptions
-                         -fno-optional-diags
-                         -fno-rtti
-)
+set(JVM_COMPILE_OPTIONS )
 
 if (${TARGET} STREQUAL PICO)
     target_compile_definitions(jvm PRIVATE PICO)
