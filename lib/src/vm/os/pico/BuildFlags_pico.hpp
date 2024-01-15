@@ -29,3 +29,5 @@
 
 #define SUPPORTS_MONOTONIC_CLOCK 1
 
+#define ARM 1
+

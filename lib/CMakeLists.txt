@@ -420,11 +420,7 @@ target_include_directories(jvm PRIVATE
                     ${JVM_INCLUDE_OS_DIRS}
 )
 
-target_compile_definitions(jvm PRIVATE
-                        JVM_RELEASE_VERSION="${LIBJVM_VERSION}"
-                        ROMIZING=1
-                        PRODUCT                      
-)
+target_compile_definitions(jvm PRIVATE JVM_RELEASE_VERSION="${LIBJVM_VERSION}" ROMIZING=1 PRODUCT)
 
 set(JVM_COMPILE_OPTIONS -Wuninitialized 
                          -Wreturn-type 
@@ -442,7 +438,7 @@ set(JVM_COMPILE_OPTIONS -Wuninitialized
 )
 
 if (${TARGET} STREQUAL PICO)
-    target_compile_definitions(jvm PRIVATE PICO ARM)
+    target_compile_definitions(jvm PRIVATE PICO)
     target_compile_options(jvm PRIVATE -mcpu=cortex-m0plus -mthumb ${JVM_COMPILE_OPTIONS})
 endif()
 

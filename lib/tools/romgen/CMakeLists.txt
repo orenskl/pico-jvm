@@ -250,11 +250,7 @@ target_include_directories(romgen PRIVATE
                     ../../src/vm/os/linux
 )
 
-target_compile_definitions(romgen PRIVATE
-                AZZERT 
-                _DEBUG
-                JVM_RELEASE_VERSION="${ROMGEN_VERSION}"
-)
+target_compile_definitions(romgen PRIVATE AZZERT _DEBUG JVM_RELEASE_VERSION="${ROMGEN_VERSION}")
 
 target_compile_options(romgen PRIVATE -m32 
     -Wuninitialized

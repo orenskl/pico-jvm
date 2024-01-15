@@ -64,7 +64,7 @@ target_include_directories(pjvm PRIVATE
 )
 
 if (${TARGET} STREQUAL PICO)
-    target_compile_definitions(pjvm PRIVATE PICO ARM)
+    target_compile_definitions(pjvm PRIVATE PICO)
 endif()
 if (${TARGET} STREQUAL LINUX)
     target_compile_definitions(pjvm PRIVATE PRODUCT)
