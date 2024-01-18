@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -239,12 +243,12 @@ void SourceObjectWriter::begin_object(Oop *object JVM_TRAPS) {
   if (ROMWriter::write_by_reference(object)) {
     return;
   }
-  int pass = writer()->pass_of(object JVM_CHECK);
+  int pass __attribute__ ((unused)) = writer()->pass_of(object JVM_CHECK);
   int skip_words = writer()->skip_words_of(object JVM_CHECK);
   int skip_bytes = sizeof(jobject) * skip_words;
 
   FarClass blueprint = object->blueprint();
-  InstanceSize instance_size = blueprint.instance_size();
+  InstanceSize instance_size __attribute__ ((unused)) = blueprint.instance_size();
 
   if (GenerateROMComments) {
     _stream->cr();
@@ -1012,7 +1016,7 @@ void SourceObjectWriter::write_jni_method_adapter(Method *method,
       "KNI_ReturnVoid",           NULL },
   };
 
-  const bool is_static = method->is_static();
+  const bool is_static __attribute__ ((unused)) = method->is_static();
   Signature::Raw sig = method->signature();
   const BasicType return_type = sig().return_type();
   const struct _type_info * return_type_info = &type_info[return_type];

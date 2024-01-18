@@ -30,6 +30,10 @@
  */
 
 /*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
+/*
  * JVM.cpp: VM startup and shutdown routines.
  *
  * This file defines routines for virtual machine
@@ -1468,7 +1472,7 @@ void JVM::P_CR(bool cond) {
 }
 
 void JVM::print_hrticks(const char *name, julong hrticks) {
- tty->print_cr("%-25s = "JVM_LLD" hrticks or %.2lf msec",
+ tty->print_cr("%-25s = " JVM_LLD " hrticks or %.2lf msec",
             name, hrticks,  msec_scale(hrticks));
 }
 #endif  // ENABLE_PERFORMANCE_COUNTERS

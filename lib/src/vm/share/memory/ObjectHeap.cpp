@@ -29,6 +29,10 @@
  *!c>
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -4674,7 +4678,7 @@ void ObjectHeap::shrink_with_compiler_area( const int size ) {
 void
 ObjectHeap::iterate(ObjectHeapVisitor* visitor, OopDesc** p, OopDesc** to) {
 #if !defined(PRODUCT) && !defined(UNDER_ADS)
-  OopDesc** previous = NULL;            // Useful for debugging
+  OopDesc** previous __attribute__ ((unused)) = NULL;            // Useful for debugging
 #endif
   while( p < to ) {
     visitor->do_obj((Oop*)&p);

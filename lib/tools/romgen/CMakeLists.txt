@@ -252,8 +252,6 @@ target_include_directories(romgen PRIVATE
 
 target_compile_definitions(romgen PRIVATE AZZERT _DEBUG JVM_RELEASE_VERSION="${ROMGEN_VERSION}")
 
-target_compile_options(romgen PRIVATE -m32)
+target_compile_options(romgen PRIVATE -Wall -Werror -m32)
 target_link_options(romgen PRIVATE -m32)
-
-install(TARGETS romgen DESTINATION ${ROMGEN_INSTALL_DIR})
 

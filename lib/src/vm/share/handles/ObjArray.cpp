@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -61,7 +65,7 @@ void oop_write_barrier_range(OopDesc** start, int len) {
   OopDesc **p;
   const juint BLOCK = 32;
 
-  if (len < BLOCK) {
+  if (len < (int)BLOCK) {
     GUARANTEE(len > 0, "ObjectHeap::set_bit_range() cannot handle len <= 0");
     // sets one bit at a time.
     ObjectHeap::set_bit_range(start, len);

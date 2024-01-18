@@ -25,6 +25,10 @@
  */
 
 /*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
+/*
  * OsMemory_linux.cpp:
  */
 
@@ -103,11 +107,15 @@ static inline ChunkInfo* alloc_chunk(address addr,
                                      size_t  initial_size,
                                      size_t  max_size) {
   int i;
-  bool found = false;
+  #ifdef AZZERT
+    bool found = false;
+  #endif
 
   for (i=0; i<MAX_CHUNKS; i++) {
     if (chunk_info[i].addr == NULL) {
-      found = true; 
+      #ifdef AZZERT
+        found = true;
+      #endif 
       break;
     }
   }
@@ -124,11 +132,15 @@ static inline ChunkInfo* alloc_chunk(address addr,
 
 static inline void release_chunk(address addr) {
   int i;
+#ifdef AZZERT
   bool found = false;
+#endif
 
   for (i=0; i<MAX_CHUNKS; i++) {
     if (chunk_info[i].addr == addr) {
-      found = true; 
+      #ifdef AZZERT
+        found = true;
+      #endif 
       break;
     }
   }
@@ -195,13 +207,21 @@ size_t OsMemory_adjust_chunk(address chunk_ptr, size_t new_committed_size) {
   size_t new_size = page_align_up(new_committed_size);
 
   if (new_size <= ci->mmaped_size) {
-    int rv;
-    if (new_size < old_size) {
-      rv = protect_area(chunk_ptr + new_size, old_size - new_size);
-    } else {
-      rv = unprotect_area(chunk_ptr, new_size);
-    }
-    GUARANTEE(rv == 0, "mprotect must succeed");
+    #ifdef AZZERT
+      int rv;
+      if (new_size < old_size) {
+        rv = protect_area(chunk_ptr + new_size, old_size - new_size);
+      } else {
+        rv = unprotect_area(chunk_ptr, new_size);
+      }
+      GUARANTEE(rv == 0, "mprotect must succeed");
+    #else
+      if (new_size < old_size) {
+        protect_area(chunk_ptr + new_size, old_size - new_size);
+      } else {
+        unprotect_area(chunk_ptr, new_size);
+      }
+    #endif
 
     ci->size = new_size;
 

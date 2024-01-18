@@ -49,7 +49,7 @@ OsFile_Handle OsFile_open(const PathChar *fn_filename, const char *mode)
       return NULL;
   }
 
-  for (int j=0; j<ARRAY_SIZE(file_handles); j++) {
+  for (uint j=0; j<ARRAY_SIZE(file_handles); j++) {
     if (file_handles[j].data == NULL) {
       file_handles[j].data   = (uint8_t *)PICO_JAR_START + sizeof(FileHeader);
       file_handles[j].length = length;
@@ -103,12 +103,10 @@ bool OsFile_exists(const PathChar *fn_filename)
 {
   FileHeader * ptr;
   uint32_t     signature;
-  uint32_t     length;
 
 
   ptr = (FileHeader *)PICO_JAR_START;
   signature = __bswap32(ptr->Signature);
-  length    = __bswap32(ptr->Length);
   if (signature != PICO_JAR_SIGNATURE) {
       TTY_TRACE_CR(("Bad wrapped JAR file signature, expected %08X, got %08X", PICO_JAR_SIGNATURE, signature));
       return false;

@@ -29,6 +29,10 @@
  *!c>
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -1295,6 +1299,7 @@ void InstanceClass::iterate_static_fields(OopVisitor* visitor) {
       case T_LONG:    visitor->do_long(&field, f.offset(), true);   break;
       case T_OBJECT:  visitor->do_oop(&field, f.offset(), true);    break;
       case T_ARRAY:   visitor->do_oop(&field, f.offset(), true);    break;
+      default: break;
       }
     }
   }
@@ -1376,6 +1381,7 @@ void InstanceClass::iterate_non_static_fields(OopVisitor* visitor) {
     case T_LONG:    visitor->do_long(&field, f.offset(), false);   break;
     case T_OBJECT:  visitor->do_oop(&field, f.offset(), false);    break;
     case T_ARRAY:   visitor->do_oop(&field, f.offset(), false);    break;
+    default: break;
     }
   }
 #endif

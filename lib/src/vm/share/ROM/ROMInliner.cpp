@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -518,9 +522,9 @@ bool ROMInliner::pop_as_needed(Method* caller,
 #if !USE_PRODUCT_BINARY_IMAGE_GENERATOR
 bool ROMInliner::zero_bci_is_branch_target(Method* method) {
   int codesize = method->code_size();
-  register jubyte *bcptr   = (jubyte*)method->code_base();
-  register jubyte *bcend   = bcptr + codesize;
-  register int bci = 0;
+  jubyte *bcptr   = (jubyte*)method->code_base();
+  jubyte *bcend   = bcptr + codesize;
+  int bci = 0;
 
   while (bcptr < bcend) {
     const Bytecodes::Code code = (Bytecodes::Code)(*bcptr);

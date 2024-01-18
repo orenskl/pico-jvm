@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #ifndef _OOPDESC_INLINE_HPP_
 #define _OOPDESC_INLINE_HPP_
 
@@ -155,8 +159,9 @@ bool OopDesc::is_jvm_thread(void) const {
 }
 
 bool OopDesc::is_throwable(void) const {
-  const InstanceClassDesc* const klass = (InstanceClassDesc*) blueprint();
-  return ((InstanceClass*)&klass)->is_subclass_of(Universe::throwable_class());
+  const InstanceClassDesc * const klass = (InstanceClassDesc*) blueprint();
+  const void * ptr = &klass;
+  return ((InstanceClass*)ptr)->is_subclass_of(Universe::throwable_class());
 }
 
 // Other basic types in the system

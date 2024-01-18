@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -151,7 +155,7 @@ bool UTF8Stream::is_valid() {
 }
 
 jchar UTF8Stream::raw_read() {
-  jchar value;
+  jchar value = 0x00;
   jint index = get_next_jchar_from_utf8(_utf8_index, &value);
   if (index == UTF8_ERROR) {
     _utf8_index = _utf8_index + 1; // make progress somehow

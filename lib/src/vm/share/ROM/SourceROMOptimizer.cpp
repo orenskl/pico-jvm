@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -526,7 +530,7 @@ void ROMOptimizer::read_hardcoded_config(JVM_SINGLE_ARG_TRAPS) {
   set_config_parsing_line_number(0);
   set_global_profile();
 
-  for (int index = 0; index < ARRAY_SIZE(hardcoded_rom_config); index++) {
+  for (unsigned int index = 0; index < ARRAY_SIZE(hardcoded_rom_config); index++) {
     // Make a copy to avoid modification of the source.
     jvm_strncpy(buffer, hardcoded_rom_config[index], buffer_size - 1);
     process_config_line(buffer JVM_CHECK);
