@@ -425,7 +425,7 @@ target_include_directories(jvm PRIVATE
 
 target_compile_definitions(jvm PRIVATE JVM_RELEASE_VERSION="${LIBJVM_VERSION}" ROMIZING=1 PRODUCT)
 
-set(JVM_COMPILE_OPTIONS -Wall -Werror)
+set(JVM_COMPILE_OPTIONS -Wall -Werror -fno-rtti -fno-exceptions)
 
 if (${TARGET} STREQUAL PICO)
     target_compile_definitions(jvm PRIVATE PICO)
