@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -323,7 +327,7 @@ inline void Universe::create_meta(JVM_SINGLE_ARG_TRAPS) {
                                      NearClassDesc::allocation_size(),
                                      InstanceSize::size_generic_near,
                                      (jubyte*)oopmap_Empty JVM_NO_CHECK);
-     for (int i = 0; i < ARRAY_SIZE(MetaClasses); i++) {
+     for (unsigned int i = 0; i < ARRAY_SIZE(MetaClasses); i++) {
        const MetaClassStruct *p = &MetaClasses[i];
 
        FarClass::Raw result = ObjectHeap::allocate(p->object_size  JVM_NO_CHECK);
@@ -342,7 +346,7 @@ inline void Universe::create_meta(JVM_SINGLE_ARG_TRAPS) {
   // Create the metaclasses whose prototypical near is a JavaNearClass
   {
     NearClass::Raw near_class = meta_class();
-    for (int i = 0; i < ARRAY_SIZE(JavaMetaClasses); i++) {
+    for (unsigned int i = 0; i < ARRAY_SIZE(JavaMetaClasses); i++) {
       const MetaClassStruct *p = &JavaMetaClasses[i];
 
       FarClass::Raw result = ObjectHeap::allocate(p->object_size JVM_NO_CHECK);
@@ -370,7 +374,7 @@ inline void Universe::create_meta(JVM_SINGLE_ARG_TRAPS) {
                                     NearClassDesc::allocation_size(),
                                     InstanceSize::size_obj_near,
                                     (jubyte*)oopmap_ObjNear JVM_NO_CHECK);
-    for (int i = 0; i < ARRAY_SIZE(ObjMetaClasses); i++) {
+    for (unsigned int i = 0; i < ARRAY_SIZE(ObjMetaClasses); i++) {
       const MetaClassStruct *p = &ObjMetaClasses[i];
 
       FarClass::Raw result = ObjectHeap::allocate(p->object_size JVM_NO_CHECK);

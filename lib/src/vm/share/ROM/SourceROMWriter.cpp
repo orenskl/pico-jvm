@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -971,16 +975,16 @@ void SourceROMWriter::write_reference(BlockType type, int offset,
 }
 
 void SourceROMWriter::write_plain_int(jint value, FileStream *stream) {
-  char buff[20];
-  jvm_sprintf(buff, "0x%08x", value);
-  GUARANTEE(jvm_strlen(buff) == 10, "sprintf check");
+  char buff[32];
+  jvm_sprintf(buff, "(int)0x%08x", value);
+  GUARANTEE(jvm_strlen(buff) == 15, "sprintf check");
   stream->print(buff);
 }
 
 void SourceROMWriter::write_int(jint value, FileStream *stream) {
-  char buff[20];
-  jvm_sprintf(buff, "     0x%08x", value);
-  GUARANTEE(jvm_strlen(buff) == 15, "sprintf check");
+  char buff[32];
+  jvm_sprintf(buff, "     (int)0x%08x", value);
+  GUARANTEE(jvm_strlen(buff) == 20, "sprintf check");
   stream->print(buff);
 }
 
@@ -1191,7 +1195,7 @@ void SourceROMWriter::write_original_info_strings(JVM_SINGLE_ARG_TRAPS) {
   // const char _rom_str123[] = {3,'f','o','o',(char)0x12,0};
   UsingFastOops level1;
   ObjArray::Fast minfo_list = _optimizer.romizer_original_method_info()->obj();
-  ObjArray::Fast finfo_list = _optimizer.romizer_original_fields_list()->obj();
+  ObjArray::Fast finfo_list __attribute__ ((unused)) = _optimizer.romizer_original_fields_list()->obj();
   ConstantPool::Fast orig_cp = _optimizer.romizer_alternate_constant_pool()->obj();
   int i;
   int class_count = number_of_romized_java_classes();
@@ -2420,7 +2424,7 @@ void SourceROMWriter::write_tm_reference(Oop* owner, int inside_owner_offset, Oo
 void OffsetFinder::begin_object(Oop *object JVM_TRAPS) {
   int offset = 0xdeadbeef;
   _current_type = writer()->block_type_of(object JVM_CHECK);
-  int pass = writer()->pass_of(object JVM_CHECK);
+  int pass __attribute__ ((unused)) = writer()->pass_of(object JVM_CHECK);
   int skip_words = writer()->skip_words_of(object JVM_CHECK);
   const bool by_ref = ROMWriter::write_by_reference(object);
 

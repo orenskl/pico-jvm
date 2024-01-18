@@ -11,11 +11,14 @@ include(ExternalProject)
 project(jvm)
 
 ExternalProject_Add(romgen SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/romgen 
-                           CMAKE_ARGS -DROMGEN_INSTALL_DIR=${CMAKE_BINARY_DIR} 
-                                      -DROMGEN_VERSION=${LIBJVM_VERSION}
+                           CMAKE_ARGS -DROMGEN_VERSION=${LIBJVM_VERSION}
                                       -DCMAKE_BUILD_TYPE:STRING=Release
                            USES_TERMINAL_BUILD TRUE
+                           BUILD_ALWAYS TRUE
+                           BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/romgen-prefix/src/romgen-build/romgen
+                           INSTALL_COMMAND cmake -E echo "Skipping install step."
 )
+ExternalProject_Get_property(romgen BINARY_DIR)
 
 if (${TARGET} STREQUAL PICO)
     set(CMAKE_C_COMPILER   arm-none-eabi-gcc)
@@ -131,14 +134,14 @@ set(JVM_CLASSES
 )
 
 add_custom_command(OUTPUT ROMImage.cpp
-                   DEPENDS ${JVM_CLASSES}
+                   DEPENDS ${JVM_CLASSES} ${BINARY_DIR}/romgen
                    COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/classes
                    COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/classes -bootclasspath ${CMAKE_BINARY_DIR}/classes ${JVM_CLASSES}
                    COMMAND ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
                    COMMAND cd ARGS ${CMAKE_BINARY_DIR}/classes.preverify
                    COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/classes.jar .
                    COMMAND cd ARGS ${CMAKE_BINARY_DIR}
-                   COMMAND ${CMAKE_BINARY_DIR}/romgen 
+                   COMMAND ${BINARY_DIR}/romgen 
                                     -cp ${CMAKE_BINARY_DIR}/classes.jar
                                     +RewriteROMConstantPool
                                     +EnableAllROMOptimizations
@@ -422,20 +425,7 @@ target_include_directories(jvm PRIVATE
 
 target_compile_definitions(jvm PRIVATE JVM_RELEASE_VERSION="${LIBJVM_VERSION}" ROMIZING=1 PRODUCT)
 
-set(JVM_COMPILE_OPTIONS -Wuninitialized 
-                         -Wreturn-type 
-                         -Wcomment 
-                         -Wparentheses 
-                         -Wformat
-                         -Wno-narrowing
-                         -fstrict-aliasing
-                         -fpermissive
-                         -fno-gnu-keywords
-                         -fno-operator-names
-                         -fno-exceptions
-                         -fno-optional-diags
-                         -fno-rtti
-)
+set(JVM_COMPILE_OPTIONS -Wall -Werror -fno-rtti -fno-exceptions)
 
 if (${TARGET} STREQUAL PICO)
     target_compile_definitions(jvm PRIVATE PICO)
@@ -446,7 +436,6 @@ if (${TARGET} STREQUAL LINUX)
     target_compile_options(jvm PRIVATE -m32 ${JVM_COMPILE_OPTIONS})
 endif()
 
-install(TARGETS jvm DESTINATION ${LIBJVM_INSTALL_DIR})
 install(FILES ${CMAKE_BINARY_DIR}/classes.jar DESTINATION ${LIBJVM_INSTALL_DIR})
 if (${TARGET} STREQUAL PICO)
     install(DIRECTORY ${CMAKE_BINARY_DIR}/doc DESTINATION ${LIBJVM_INSTALL_DIR})

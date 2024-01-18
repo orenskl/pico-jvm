@@ -29,6 +29,10 @@
  *!c>
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -1605,6 +1609,8 @@ bool ConstantPoolRewriter::shall_create_new_method(Method *method, int* p_new_si
         new_len = 0;
         result = true;
       }
+      break;
+    default:
       break;
     }
 

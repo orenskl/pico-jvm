@@ -29,6 +29,10 @@
  *!c>
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -174,6 +178,8 @@ void ConstantPool::check_constant_at(int index, FieldType* type JVM_TRAPS) const
       }
     }
     break;
+    default:
+      break;
   }
 
   Throw::class_format_error(invalid_constant JVM_THROW);

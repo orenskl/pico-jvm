@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -982,7 +986,7 @@ void Scheduler::wait(JavaOop* obj, jlong millis JVM_TRAPS) {
   thread->set_status((thread->status() & ~THREAD_NOT_ACTIVE_MASK) |THREAD_CONVAR_WAIT);
 #endif
 
-  Thread::Fast pending_waiters = add_waiting_thread(thread, obj);
+  Thread::Fast pending_waiters __attribute__ ((unused)) = add_waiting_thread(thread, obj);
 
   wait_for(thread, millis);
 }

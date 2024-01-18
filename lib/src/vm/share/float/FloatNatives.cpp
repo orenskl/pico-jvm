@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -87,22 +91,24 @@ JVM_SOFTFP_LINKAGE jdouble jvm_fabs(jdouble x) {
   return jvm_fplib_fabs(x);
 }
 
-JVM_SOFTFP_LINKAGE jint jvm_floatToIntBits(jfloat x) {
+JVM_SOFTFP_LINKAGE jint jvm_floatToIntBits(jfloat x)
+{
   jint bits = float_bits(x);
   if ((bits & 0x7FFFFFFF) >= 0x5F000000) {
-    if ((bits >= F_L_POS_NAN && bits <= F_H_POS_NAN) ||
-	(bits >= F_L_NEG_NAN && bits <= F_H_NEG_NAN)) {
+    if ((bits >= (jint)F_L_POS_NAN && bits <= (jint)F_H_POS_NAN) ||
+        (bits >= (jint)F_L_NEG_NAN && bits <= (jint)F_H_NEG_NAN)) {
       bits = F_JUST_NAN;
     }
   }
   return bits;
 }
 
-JVM_SOFTFP_LINKAGE jlong jvm_doubleToLongBits(jdouble x) {
+JVM_SOFTFP_LINKAGE jlong jvm_doubleToLongBits(jdouble x)
+{
   jlong bits = double_bits(x);
   if ((bits & JVM_LL(0x7FFFFFFFFFFFFFFF)) >= JVM_LL(0x43E0000000000000)) {
-    if ((bits >= D_L_POS_NAN && bits <= D_H_POS_NAN) ||
-	(bits >= D_L_NEG_NAN && bits <= D_H_NEG_NAN)) {
+    if ((bits >= (jlong)D_L_POS_NAN && bits <= (jlong)D_H_POS_NAN) ||
+        (bits >= (jlong)D_L_NEG_NAN && bits <= (jlong)D_H_NEG_NAN)) {
       bits = D_JUST_NAN;
     }
   }

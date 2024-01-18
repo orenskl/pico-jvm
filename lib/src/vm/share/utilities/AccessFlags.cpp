@@ -26,6 +26,10 @@
 
 // CopyrightVersion 1.2
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -72,7 +76,7 @@ const AccessFlags::FlagInfo AccessFlags::flag_info[] = {
 void AccessFlags::print_to_buffer(char *buff, int type) const {
   const char *prefix = "";
   buff[0] = 0;
-  for (int i=0; i<sizeof(flag_info)/sizeof(FlagInfo); i++) {
+  for (unsigned int i=0; i<sizeof(flag_info)/sizeof(FlagInfo); i++) {
     if ((_flags & flag_info[i].flag) != 0 && (type & flag_info[i].type) != 0) {
       jvm_strcat(buff, prefix);
       jvm_strcat(buff, flag_info[i].name);
@@ -105,7 +109,7 @@ void AccessFlags::print_definitions(int type) {
     bool found = false;
 
     tty->print("    1 << %2d ", n);
-    for (int i=0; i<sizeof(flag_info)/sizeof(FlagInfo); i++) {
+    for (unsigned int i=0; i<sizeof(flag_info)/sizeof(FlagInfo); i++) {
       if ((type & flag_info[i].type) != 0 && (mask & flag_info[i].flag) != 0) {
         // Two flags can't have the same value for the same type
         GUARANTEE(!found, "duplicated flag value");

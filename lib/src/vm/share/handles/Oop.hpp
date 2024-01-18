@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #ifndef _OOP_HPP_
 #define _OOP_HPP_
 
@@ -781,8 +785,8 @@ public:
  */
 class UsingFastOops {
 private:
-  AZZERT_ONLY(void pre_fast_oops_verification (void) const;)
-  AZZERT_ONLY(void post_fast_oops_verification(void) const;)
+  AZZERT_ONLY(__attribute__ ((access (none,1))) void pre_fast_oops_verification (void) const;)
+  AZZERT_ONLY(__attribute__ ((access (none,1))) void post_fast_oops_verification(void) const;)
   Oop* _previous;
 
 public:

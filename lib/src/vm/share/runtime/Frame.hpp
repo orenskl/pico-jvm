@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 /** \class Frame
     Describes the stack layout of a JavaFrame or EntryFrame.
     See also the cpu specific files Frame_<cpu>.cpp.
@@ -231,10 +235,16 @@ public:
   }
 
 #if ENABLE_FLOAT
-  jfloat    as_float()  { return *((jfloat*)base()); } 
-  jdouble   as_double() { 
-    jlong a = as_long();
-    return *(jdouble *)&a;
+  jfloat    as_float()  { return *((jfloat*)base()); }
+
+  jdouble as_double()
+  {
+    union {
+      jlong   l;
+      jdouble d;
+    } u;
+    u.l = as_long();
+    return u.d;
   }
 #endif
 
@@ -256,7 +266,12 @@ public:
   }
 
   void set_double(jdouble val) {
-    set_long(*(jlong*)&val);
+    union {
+      jdouble d;
+      jlong   l;
+    } u;
+    u.d = val;
+    set_long(u.l);
   }
 
   // Printing
@@ -699,8 +714,12 @@ class RuntimeFrame: public Frame {
     return *((jfloat*) address_for(index));
   }
   jdouble   double_at (const jint index) const { 
-    jlong value = long_at(index);
-    return *(double *)&value;
+    union {
+      jdouble d;
+      jlong   l;
+    } u;
+    u.l = long_at(index);
+    return u.d;
   }
       
 #endif

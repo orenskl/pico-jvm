@@ -24,6 +24,10 @@
  */
 
 /*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
+/*
  * Globals.cpp: This file implements the parsing mechanisms
  * for execution options & command line switches.
  *
@@ -330,7 +334,7 @@ __PR(st, "AZZERT");
   {
     // ENABLE_FLAG_VALUES is defined in the auto-generated jvmconfig.h
     static const char* enable_flag_values[] = ENABLE_FLAG_VALUES;
-    for (int i=0; i<ARRAY_SIZE(enable_flag_values); i+=2) {
+    for (unsigned int i=0; i<ARRAY_SIZE(enable_flag_values); i+=2) {
       const char *name  = enable_flag_values[i];
       const char *value = enable_flag_values[i+1];
       st->print_cr("  %-40s %s", name, value);

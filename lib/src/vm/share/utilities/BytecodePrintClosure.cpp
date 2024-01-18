@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -51,6 +55,8 @@ static const char* type_name(BasicType t) {
     case T_ARRAY:     return "arr";
     case T_VOID:      return "void";
     case T_ILLEGAL:   return "##ILLEGAL##";
+    default:
+      break;
   }
   return "<unknown type>";
 }
@@ -121,6 +127,8 @@ void BytecodePrintClosure::load_local(BasicType kind, int index JVM_TRAPS) {
     case Bytecodes::_aload_0_fast_agetfield_1:
       // Don't bother printing out the #0
       return;
+    default:
+      break;
   }
 
   if (current_bytecode_length() > 1) { 

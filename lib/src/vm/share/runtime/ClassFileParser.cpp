@@ -29,6 +29,10 @@
  *!c>
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -221,7 +225,12 @@ ClassFileParser::parse_constant_pool_entries(ConstantPool* cp JVM_TRAPS) {
 #if ENABLE_FLOAT
         {
           juint bytes = get_u4(JVM_SINGLE_ARG_CHECK);
-          cp->float_at_put(index, *(jfloat*)&bytes);
+          union {
+            jfloat f;
+            juint  u;
+          } u;
+          u.u = bytes;
+          cp->float_at_put(index, u.f);
         }
         break;
 #else

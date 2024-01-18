@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -627,6 +631,8 @@ void BasicOop::iterate_one_oopmap_entry(BasicType type, void *param,
     break;
   case T_OBJECT:
     visitor->do_oop(&id, offset, true);
+    break;
+  default:
     break;
   }
 #endif

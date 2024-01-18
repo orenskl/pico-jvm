@@ -30,6 +30,10 @@
  */
 
 /*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
+/*
  * OS_linux.cpp: Linux implementation of the VM
  *               operating system porting interface
  *
@@ -199,7 +203,9 @@ static bool   ticker_running = false;
 static bool   ticker_stopping = false;
 static bool   ticker_stopped = false;
 
-AZZERT_ONLY(static bool is_processing_timer_tick = false;)
+#if !ENABLE_TIMER_THREAD
+  AZZERT_ONLY(static bool is_processing_timer_tick = false;)
+#endif
 
 #if ENABLE_COMPILER
 static bool   _compiler_timer_has_ticked;

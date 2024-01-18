@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 /**
    \class VerifierFrame
    Defines the stack operations performed on the CLDC Verifier stack.
@@ -181,6 +185,8 @@ void VerifierFrame::pop_object(Symbol* name JVM_TRAPS) {
 
     case ITEM_Null:
       return;
+    default:
+      break;
   }
   VFY_ERROR(ve_stack_bad_type);
 }

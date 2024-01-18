@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -1545,8 +1549,7 @@ enum {
 
     _jvm_in_quick_native_method = 1;
     jint r1, r2;
-    va_list ap;
-    invoke_native_entry(native_ptr, return_type, 0, ap, r1, r2);
+    invoke_native_entry(native_ptr, return_type, 0, va_list(), r1, r2);
     _jvm_in_quick_native_method = 0;
 
     if (_jvm_quick_native_exception != NULL) {
@@ -2279,6 +2282,7 @@ enum {
     case T_DOUBLE : DOUBLE_PUSH(rv.double_val);    break;
     case T_OBJECT : OBJ_PUSH(rv.object_val);       break;
     case T_VOID   : break;
+    default       : break;
     }
   }
 
@@ -3081,7 +3085,7 @@ enum {
       return;
     }
     jint rv = val1;
-    if (val1 != 0x80000000 || val2 != -1) {
+    if (val1 != (jint)0x80000000 || val2 != -1) {
       rv  /=  val2;
     }
     PUSH(rv);
@@ -3121,7 +3125,7 @@ enum {
       interpreter_throw_ArithmeticException();
       return;
     }
-    if (val1 == 0x80000000 && val2 == -1) {
+    if (val1 == (jint)0x80000000 && val2 == -1) {
       PUSH(val1 % 1);
     } else {
       PUSH(val1 % val2);
@@ -4511,7 +4515,7 @@ static void init() {
 #endif
 
   // make it clean
-  for (int i=0; i < ARRAY_SIZE(interpreter_dispatch_table); i++) {
+  for (unsigned int i=0; i < ARRAY_SIZE(interpreter_dispatch_table); i++) {
     interpreter_dispatch_table[i] = &undef_bc;
   }
   // init bytecodes dispatch table

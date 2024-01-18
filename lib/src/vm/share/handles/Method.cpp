@@ -29,6 +29,10 @@
  *!c>
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -1136,6 +1140,8 @@ void Method::check_bytecodes(JVM_SINGLE_ARG_TRAPS) {
             }
           }
           break;
+          default:
+            break;
         }
         if ((bytecode_length = bytecode_length_for(bci)) == -1) {
           goto error;
@@ -1270,6 +1276,8 @@ ReturnOop Method::create_other_endianness(JVM_SINGLE_ARG_TRAPS) {
           result().put_native_ushort(bci+1, Bytes::swap_u2(old));
           break;
         }
+        default:
+          break;
       }
     }
   }
@@ -2458,7 +2466,7 @@ OopDesc* Method::compute_entry_counts(JVM_SINGLE_ARG_TRAPS) const {
   {
     const jubyte* codebase = (jubyte*)code_base();
     int bci = 0;
-    int branch_bci = -1;
+    int branch_bci __attribute__((unused)) = -1;
 
     while( bci < codesize ) {
       const jubyte* const bcptr = codebase + bci;
@@ -2513,6 +2521,8 @@ OopDesc* Method::compute_entry_counts(JVM_SINGLE_ARG_TRAPS) const {
             ADD_BACK_BRANCH_ENTRY( get_java_switch_int(4 * i + table_index + 12) );
           }
         } break;
+        default:
+          break;
       }
 
       if( Bytecodes::can_fall_through_flags( Bytecodes::get_flags(code) ) ) {

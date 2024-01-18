@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 /** \file GlobalDefinitions_gcc.hpp
  * Global definitions for GNU C++
  *
@@ -71,11 +75,45 @@ typedef unsigned int   uintptr_t;
 // Special (possibly not-portable) casts
 // Cast floats into same-size integers and vice-versa w/o changing bit-pattern
 
-inline jint    jint_cast   (jfloat  x)           { return *(jint*   )&x; }
-inline jlong   jlong_cast  (jdouble x)           { return *(jlong*  )&x; }
+inline jint jint_cast(jfloat x)
+{
+  union {
+    jint   i;
+    jfloat f;
+  } u;
+  u.f = x;
+  return u.i;
+}
 
-inline jfloat  jfloat_cast (jint    x)           { return *(jfloat* )&x; }
-inline jdouble jdouble_cast(jlong   x)           { return *(jdouble*)&x; }
+inline jlong jlong_cast(jdouble x)
+{
+  union {
+    jlong   l;
+    jdouble d;
+  } u;
+  u.d = x;
+  return u.l;
+}
+
+inline jfloat jfloat_cast(jint x)
+{
+  union {
+    jfloat f;
+    jint   i;
+  } u;
+  u.i = x;
+  return u.f;
+}
+
+inline jdouble jdouble_cast(jlong x)
+{
+  union {
+    jdouble d;
+    jlong   l;
+  } u;
+  u.l = x;
+  return u.d;
+}
 
 //---------------------------------------------------------------------------
 // Debugging

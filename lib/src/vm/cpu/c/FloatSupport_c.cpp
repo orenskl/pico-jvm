@@ -28,6 +28,10 @@
 * - remove all ASM
 */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -84,19 +88,20 @@ extern "C" {
   
   jdouble jvm_l2d(jlong x)                       { return (jdouble)x; }
 
-  jint    jvm_f2i(jfloat x)                      { 
+  jint jvm_f2i(jfloat x)
+  {
     jint rv, bits = float_bits(x);
-    
+
     if ((bits & 0x7FFFFFFF) >= 0x4F000000) {
-      if ((bits >= F_L_POS_NAN && bits <= F_H_POS_NAN) ||
-	  (bits >= F_L_NEG_NAN && bits <= F_H_NEG_NAN)) {
-	rv = 0;   /* NaN */
+      if ((bits >= (jint)F_L_POS_NAN && bits <= (jint)F_H_POS_NAN) ||
+          (bits >= (jint)F_L_NEG_NAN && bits <= (jint)F_H_NEG_NAN)) {
+        rv = 0; /* NaN */
       } else if (bits > 0) {
-	rv = MAX_INT;  /* +Infinity */
+        rv = MAX_INT; /* +Infinity */
       } else if (bits < 0) {
-	rv = MIN_INT;  /* -Infinity */
+        rv = MIN_INT; /* -Infinity */
       } else {
-	rv = 0;
+        rv = 0;
       }
     } else {
       rv = (jint)x;
@@ -106,28 +111,29 @@ extern "C" {
 
   jdouble jvm_f2d(jfloat x)                      { return (jdouble)x; }
 
-  jlong   jvm_f2l(jfloat x)                      { 
+  jlong jvm_f2l(jfloat x)
+  {
     jint bits = float_bits(x);
-    jlong rv;  
+    jlong rv;
     /*
      * 0x5F000000 = (0x4F000000 + 2E28) magic number for Float
      * any number >= this number will be a special case
      */
     if ((bits & 0x7FFFFFFF) >= 0x5F000000) {
-      if ((bits >= F_L_POS_NAN && bits <= F_H_POS_NAN) ||
-	  (bits >= F_L_NEG_NAN && bits <= F_H_NEG_NAN)) {
-	rv = 0;   /* NaN */
+      if ((bits >= (jint)F_L_POS_NAN && bits <= (jint)F_H_POS_NAN) ||
+          (bits >= (jint)F_L_NEG_NAN && bits <= (jint)F_H_NEG_NAN)) {
+        rv = 0; /* NaN */
       } else if (bits > 0) {
-	rv = MAX_LONG;  /* +Infinity */
+        rv = MAX_LONG; /* +Infinity */
       } else if (bits < 0) {
-        rv = MIN_LONG;  /* -Infinity */
+        rv = MIN_LONG; /* -Infinity */
       } else {
-	rv = 0;
+        rv = 0;
       }
     } else {
       rv = (jlong)x;
     }
-    return rv; 
+    return rv;
   }
 
   jfloat  jvm_i2f(jint x)                        { return (jfloat)x; }
@@ -136,9 +142,10 @@ extern "C" {
 
   jfloat  jvm_l2f(jlong x)                       { return (jfloat)x; }
 
-  jfloat  jvm_d2f(jdouble x)                     { return (jfloat)x; }  
+  jfloat  jvm_d2f(jdouble x)                     { return (jfloat)x; }
 
-  jlong   jvm_d2l(jdouble x)                     { 
+  jlong jvm_d2l(jdouble x)
+  {
     jlong bits = double_bits(x);
     jlong rv;
     /*
@@ -146,42 +153,43 @@ extern "C" {
      * for Float any number >= this number will be a special case
      */
     if ((bits & JVM_LL(0x7FFFFFFFFFFFFFFF)) >= JVM_LL(0x43E0000000000000)) {
-      if ((bits >= D_L_POS_NAN && bits <= D_H_POS_NAN) ||
-	  (bits >= D_L_NEG_NAN && bits <= D_H_NEG_NAN)) {
-	rv =  0;   /* NaN */
+      if ((bits >= (jlong)D_L_POS_NAN && bits <= (jlong)D_H_POS_NAN) ||
+          (bits >= (jlong)D_L_NEG_NAN && bits <= (jlong)D_H_NEG_NAN)) {
+        rv = 0; /* NaN */
       } else if (bits > 0) {
-	rv =  MAX_LONG;  /* +Infinity */
+        rv = MAX_LONG; /* +Infinity */
       } else if (bits < 0) {
-	rv =  MIN_LONG;  /* -Infinity */
+        rv = MIN_LONG; /* -Infinity */
       } else {
-	rv = 0;
+        rv = 0;
       }
     } else {
       rv = (jlong)x;
     }
-    return rv; 
+    return rv;
   }
 
-  jint    jvm_d2i(jdouble x)                     { 
+  jint jvm_d2i(jdouble x)
+  {
     jlong bits = double_bits(x);
     jint rv;
     if ((bits & JVM_LL(0x7FFFFFFFFFFFFFFF)) >= JVM_LL(0x41E0000000000000)) {
-      if ((bits >= D_L_POS_NAN && bits <= D_H_POS_NAN) ||
-	  (bits >= D_L_NEG_NAN && bits <= D_H_NEG_NAN)) {
-	rv = 0;   /* NaN */
+      if ((bits >= (jlong)D_L_POS_NAN && bits <= (jlong)D_H_POS_NAN) ||
+          (bits >= (jlong)D_L_NEG_NAN && bits <= (jlong)D_H_NEG_NAN)) {
+        rv = 0; /* NaN */
       } else if (bits > 0) {
-	rv = MAX_INT;  /* +Infinity */
+        rv = MAX_INT; /* +Infinity */
       } else if (bits < 0) {
-	rv = MIN_INT;  /* -Infinity */
+        rv = MIN_INT; /* -Infinity */
       } else {
-	rv = 0;
+        rv = 0;
       }
     } else {
       rv = (jint)x;
     }
-    return rv; 
+    return rv;
   }
-  
+
   jint    jvm_fcmpg(jfloat x, jfloat y)          { 
     return  ((x > y)   ?  1   : 
 	     (x == y)  ?  0 : 

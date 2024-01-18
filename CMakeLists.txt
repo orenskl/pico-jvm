@@ -27,13 +27,20 @@ if (${TARGET} STREQUAL PICO)
     pico_sdk_init()
 endif()
 
-ExternalProject_Add(libjvm SOURCE_DIR ${CMAKE_SOURCE_DIR}/lib
-                           CMAKE_ARGS -DLIBJVM_INSTALL_DIR=${CMAKE_BINARY_DIR} 
-                                      -DLIBJVM_VERSION=${PROJECT_VERSION}
-                                      -DCMAKE_BUILD_TYPE:STRING=MinSizeRel
-                                      -DTARGET:STRING=${TARGET}
-                           USES_TERMINAL_BUILD TRUE
+ExternalProject_Add(jvm_lib SOURCE_DIR ${CMAKE_SOURCE_DIR}/lib
+                            CMAKE_ARGS -DLIBJVM_INSTALL_DIR:STRING=${CMAKE_BINARY_DIR} 
+                                       -DLIBJVM_VERSION:STRING=${PROJECT_VERSION}
+                                       -DCMAKE_BUILD_TYPE:STRING=MinSizeRel
+                                       -DTARGET:STRING=${TARGET}
+                                       -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+                            USES_TERMINAL_BUILD TRUE
+                            BUILD_ALWAYS TRUE
+                            BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/jvm_lib-prefix/src/jvm_lib-build/libjvm.a
 )
+ExternalProject_Get_property(jvm_lib BINARY_DIR)
+add_library(jvm STATIC IMPORTED)
+set_property(TARGET jvm PROPERTY IMPORTED_LOCATION ${BINARY_DIR}/libjvm.a)
+add_dependencies(jvm jvm_lib)
 
 if (${TARGET} STREQUAL PICO)
     set(PJVM_SOURCES src/pico/Main.cpp src/pico/OS.cpp src/pico/Natives.cpp)
@@ -42,8 +49,11 @@ if (${TARGET} STREQUAL LINUX)
     set(PJVM_SOURCES src/linux/Main.cpp src/linux/OS.cpp)
 endif()
 
+#add_library(libjvm STATIC IMPORTED)
+#set_property(TARGET libjvm PROPERTY IMPORTED_LOCATION ${BINARY_DIR}/libjvm.a)
+#add_dependencies(jvmprojlib jvmproj)
+
 add_executable(pjvm ${PJVM_SOURCES})
-add_dependencies(pjvm libjvm)
 
 if (${TARGET} STREQUAL PICO)
     set(PJVM_INCLUDE_OS_DIRS lib/src/vm/os/pico)
@@ -68,7 +78,7 @@ if (${TARGET} STREQUAL PICO)
 endif()
 if (${TARGET} STREQUAL LINUX)
     target_compile_definitions(pjvm PRIVATE PRODUCT)
-    target_compile_options(pjvm PRIVATE -m32 -fpermissive)
+    target_compile_options(pjvm PRIVATE -m32)
     target_link_options(pjvm PRIVATE -m32)
 endif()
 

@@ -29,6 +29,10 @@
  *!c>
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #ifndef _STREAM_HPP_
 #define _STREAM_HPP_
 
@@ -115,8 +119,8 @@ public:
   void print_double(double d) {
     jdouble_accessor tmp;
     tmp.double_value = d;
-    jint msw = tmp.words[MSW_FIRST_FOR_DOUBLE ? 0 : 1];
-    jint lsw = tmp.words[MSW_FIRST_FOR_DOUBLE ? 1 : 0];
+    juint msw = tmp.words[MSW_FIRST_FOR_DOUBLE ? 0 : 1];
+    juint lsw = tmp.words[MSW_FIRST_FOR_DOUBLE ? 1 : 0];
     if (msw == 0x7ff00000 && lsw == 0x00000000) {
       print("Inf");
     } else if (msw == 0xfff00000 && lsw == 0x00000000) {

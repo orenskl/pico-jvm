@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -140,18 +144,21 @@ bool BytecodeOptimizer::has_static_arrays(Method *method, int& new_method_size) 
             switch (code_for_array_type) {
             case Bytecodes::_bastore:
               size_factor = 1;
-              break;
+            break;
             case Bytecodes::_castore:
             case Bytecodes::_sastore:
               size_factor = 2;
-              break;
+            break;
             case Bytecodes::_iastore:
             case Bytecodes::_fastore:
               size_factor = 4;
-              break;
+            break;
             case Bytecodes::_lastore:
             case Bytecodes::_dastore:
-              size_factor = 8;              
+              size_factor = 8;
+              break;
+            default:
+              break;
             }
             _owner->_new_bytecode_address.short_at_put(old_bcis[0], start_bci);
             _owner->_new_bytecode_address.short_at_put(old_bcis[1], start_bci);
@@ -326,18 +333,21 @@ ReturnOop BytecodeOptimizer::optimize_static_arrays(Method *method JVM_TRAPS) {
             switch (code_for_array_type) {
             case Bytecodes::_bastore:
               size_factor = 1;
-              break;
+            break;
             case Bytecodes::_castore:
             case Bytecodes::_sastore:
               size_factor = 2;
-              break;
+            break;
             case Bytecodes::_iastore:
             case Bytecodes::_fastore:
               size_factor = 4;
-              break;
+            break;
             case Bytecodes::_lastore:
             case Bytecodes::_dastore:
-              size_factor = 8;              
+              size_factor = 8;
+              break;
+            default:
+              break;
             }
 
             if (array_element_count == 0) { //add header
@@ -431,7 +441,12 @@ bool BytecodeOptimizer::get_values(Bytecodes::Code code, Method* method, int old
     case(Bytecodes::_fconst_2): 
     {             
       float value = jvm_i2f(code - Bytecodes::_fconst_0);
-      current_value1 = *(int*)(&value);
+      union {
+        int   i;
+        float f;
+      } u;
+      u.f = value;
+      current_value1 = u.i;
       return true;
     }
     case(Bytecodes::_dconst_0):
@@ -456,6 +471,8 @@ bool BytecodeOptimizer::get_values(Bytecodes::Code code, Method* method, int old
     case(Bytecodes::_ldc2_w):
       get_values_from_cp(method, method->get_java_ushort(old_bci + 1), current_value1, current_value2);              
       return true;
+    default:
+      break;
     }
   } else {
 #if ENABLE_JAVA_STACK_TAGS
@@ -477,6 +494,8 @@ bool BytecodeOptimizer::get_values(Bytecodes::Code code, Method* method, int old
       case(Bytecodes::_fast_dldc_w ):
         get_values_from_cp(method, method->get_java_ushort(old_bci + 1), current_value1, current_value2);              
         return true;
+      default:
+        break;
       }
 #else
     if (code >= Bytecodes::_fast_1_ldc && code <= Bytecodes::_fast_2_ldc_w) {
@@ -488,6 +507,8 @@ bool BytecodeOptimizer::get_values(Bytecodes::Code code, Method* method, int old
         case(Bytecodes::_fast_2_ldc_w ):
           get_values_from_cp(method, method->get_java_ushort(old_bci + 1), current_value1, current_value2);
           return true;
+        default:
+          break;
         }
 #endif              
     } else {
@@ -531,6 +552,8 @@ bool BytecodeOptimizer::check_array_index(Bytecodes::Code code, Method* method, 
     }
   } 
   break;
+  default:
+    break;
   }
   return false;
 }
@@ -628,7 +651,12 @@ void BytecodeOptimizer::get_values_from_cp(Method* method, int index, int& value
 #if ENABLE_FLOAT
   case JVM_CONSTANT_Float: {
     float fvalue = cp.float_at(index);
-    value1 = *(int*)&fvalue;
+    union {
+      int   i;
+      float f;
+    } u;
+    u.f = fvalue;
+    value1 = u.i;
     value2 = 0;
     break;
     }
@@ -691,6 +719,8 @@ ReturnOop BytecodeOptimizer::optimize_bytecodes(Method *p_method JVM_TRAPS) {
         }
       }
       break;
+      default:
+        break;
     }
     bci += len;
   }
@@ -744,6 +774,8 @@ ReturnOop BytecodeOptimizer::optimize_bytecodes(Method *p_method JVM_TRAPS) {
         ++_num_optimized_bytecodes[new_code];
       }
       break;
+      default:
+        break;
     }
     last_code = code;
     bci += len;

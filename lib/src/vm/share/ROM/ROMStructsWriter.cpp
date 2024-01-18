@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -403,6 +407,7 @@ int ROMStructsWriter::write_rom_struct_type(Stream *stream, Field *field
   case T_SHORT:   type = "jshort";   size = 2; break;
   case T_INT:     type = "jint";     size = 4; break;
   case T_LONG:    type = "jlong";    size = 8; break;
+  default: break;
   }
 
   if (field->type() == T_ARRAY) {

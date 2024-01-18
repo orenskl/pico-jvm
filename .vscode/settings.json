@@ -10,4 +10,6 @@
     "cSpell.words": [
         "Pico"
     ],
+    "cmake.mergedCompileCommands": "${workspaceFolder}/build/merged_compile_commands.json",
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/build/merged_compile_commands.json"
 }

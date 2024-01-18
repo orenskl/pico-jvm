@@ -24,6 +24,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #include "jvmconfig.h"
 
 #include "BuildFlags.hpp"
@@ -103,6 +107,8 @@ static void iterate_fields(InstanceClass* ic, OopVisitor* visitor,
         break;
       case T_ARRAY:
         visitor->do_oop(&field, f.offset(), visit_value);
+        break;
+      default:
         break;
       }
     }
