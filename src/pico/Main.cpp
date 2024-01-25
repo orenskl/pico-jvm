@@ -17,6 +17,7 @@
 #include "sni.h"
 
 #include "pico/stdlib.h"
+#include "hardware/adc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -87,6 +88,8 @@ int main( void )
   stdio_usb_init();
   /* We have to wait for the USB stack */
   sleep_ms(3000);
+  /* Initialize the ADC hardware */
+  adc_init();
 
   // Call this before any other Jvm_ functions.
   JVM_Initialize();

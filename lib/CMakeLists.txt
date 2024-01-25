@@ -25,7 +25,9 @@ if (${TARGET} STREQUAL PICO)
     set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 endif()
 if (${TARGET} STREQUAL PICO)
-    set(JVM_DEVICE_CLASSES ${CMAKE_SOURCE_DIR}/src/javaapi/device/pico/hardware/GPIOPin.java)
+    set(JVM_DEVICE_CLASSES ${CMAKE_SOURCE_DIR}/src/javaapi/device/pico/hardware/GPIOPin.java
+                           ${CMAKE_SOURCE_DIR}/src/javaapi/device/pico/hardware/ADCChannel.java
+    )
 endif()
 
 set(JVM_CLASSES 
@@ -135,6 +137,7 @@ set(JVM_CLASSES
 
 add_custom_command(OUTPUT ROMImage.cpp
                    DEPENDS ${JVM_CLASSES} ${BINARY_DIR}/romgen
+                   COMMAND rm ARGS -rf ${CMAKE_BINARY_DIR}/classes ${CMAKE_BINARY_DIR}/classes.preverify
                    COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/classes
                    COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/classes -bootclasspath ${CMAKE_BINARY_DIR}/classes ${JVM_CLASSES}
                    COMMAND ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
