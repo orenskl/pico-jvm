@@ -18,7 +18,7 @@ if (${TARGET} STREQUAL PICO)
     include(pico_sdk_import.cmake)
 endif()
 
-project(pjvm VERSION 0.0.2)
+project(pjvm VERSION 0.0.4)
 
 include(CTest) 
 
@@ -49,14 +49,10 @@ if (${TARGET} STREQUAL LINUX)
     set(PJVM_SOURCES src/linux/Main.cpp src/linux/OS.cpp)
 endif()
 
-#add_library(libjvm STATIC IMPORTED)
-#set_property(TARGET libjvm PROPERTY IMPORTED_LOCATION ${BINARY_DIR}/libjvm.a)
-#add_dependencies(jvmprojlib jvmproj)
-
 add_executable(pjvm ${PJVM_SOURCES})
 
 if (${TARGET} STREQUAL PICO)
-    set(PJVM_INCLUDE_OS_DIRS lib/src/vm/os/pico)
+    set(PJVM_INCLUDE_OS_DIRS lib/src/vm/os/pico ${PICO_SDK_PATH}/src/rp2_common/hardware_adc/include)
 endif()
 if (${TARGET} STREQUAL LINUX)
     set(PJVM_INCLUDE_OS_DIRS lib/src/vm/os/linux)
@@ -87,7 +83,7 @@ target_link_directories(pjvm PRIVATE ${CMAKE_BINARY_DIR})
 
 if (${TARGET} STREQUAL PICO)
     # Add pico_stdlib library which aggregates commonly used features
-    target_link_libraries(pjvm pico_stdlib)
+    target_link_libraries(pjvm pico_stdlib hardware_adc)
     # create map/bin/hex/uf2 file in addition to ELF.
     pico_add_extra_outputs(pjvm)
     pico_enable_stdio_usb(pjvm 1)

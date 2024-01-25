@@ -1,0 +1,56 @@
+<!--
+
+SPDX-License-Identifier: GPL-2.0-or-later
+Copyright (C) 2024 Oren Sokoler (https://github.com/orenskl)
+
+-->
+
+<project name="adc" basedir="." default="bin">
+
+    <property environment="env"/>
+    <fail unless="env.JAVA_PICO_HOME" message="Please set JAVA_PICO_HOME to the location of the pjvm base directory"/>
+    <property name="pjvm.dir" value="${env.JAVA_PICO_HOME}"/>
+
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"     value="${build.dir}/jar"/>
+    <property name="main-class"  value="Main"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac target="1.4" source="1.4" srcdir="${src.dir}" destdir="${classes.dir}" 
+               bootclasspath="${pjvm.dir}/lib/classes.jar" includeantruntime="false"/>
+    </target>
+
+    <target name="preverify" depends="compile">
+        <echo message="Preverifying classes"/>
+        <exec executable="${pjvm.dir}/bin/preverify">
+            <arg value="-d"/>
+            <arg value="${classes.dir}.preverify"/>
+            <arg value="-classpath"/>
+            <arg value="${pjvm.dir}/lib/classes.jar"/>
+            <arg value="${classes.dir}"/>
+        </exec>
+    </target>
+
+    <target name="jar" depends="preverify">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}.preverify" compress="false" />
+    </target>
+
+    <target name="bin" depends="jar">
+        <echo message="Wrapping JAR"/>
+        <exec executable="${pjvm.dir}/bin/wrapjar.sh">
+            <arg value="${jar.dir}/${ant.project.name}.jar"/>
+            <arg value="${jar.dir}/${ant.project.name}.jar.bin"/>
+        </exec>
+    </target>
+
+    <target name="clean-build" depends="clean,bin"/>
+
+</project>

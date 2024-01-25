@@ -10,13 +10,17 @@
 #include "kni.h"
 
 #include "hardware/gpio.h"
+#include "hardware/adc.h"
+
+#define         ADC_GPIO_PIN_MIN        26
+#define         ADC_GPIO_PIN_MAX        29
 
 extern "C" {
 
 /*
  * This file is the native implementation of the device specific
  * classes that access the hardware, these functions are called from
- * the Java classes. All the functions are void but they get thei
+ * the Java classes. All the functions are void but they get their
  * input parameters from the JVM stack via KNI calls
  */
 
@@ -80,4 +84,30 @@ int Java_pico_hardware_GPIOPin_gpio_1get( void )
     return gpio_get(pinNumber);
 }
 
+/**
+ * Initialize an ADC channel
+@ * 
+ * @param The 1st parameter is the channel number
+ * 
+ */
+void Java_pico_hardware_ADCChannel_adc_1init ( void )
+{
+    int channel = KNI_GetParameterAsInt(1);
+    adc_gpio_init(ADC_GPIO_PIN_MIN + channel);
 }
+
+/**
+ * Read a single sample from the ADC channel
+ * 
+ * @param The 1st parameter is the channel number
+ * @return The sample read as an integer
+ * 
+ */
+int Java_pico_hardware_ADCChannel_adc_1read ( void ) 
+{
+    int channel = KNI_GetParameterAsInt(1);
+    adc_select_input(channel);
+    return adc_read();
+}
+
+} /* extern "C" */
