@@ -1,4 +1,5 @@
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/orenskl/pico-jvm/main.yml?label=build)](https://github.com/orenskl/pico-jvm/actions/workflows/main.yml)
+[![GitHub Tag](https://img.shields.io/github/v/tag/orenskl/pico-jvm)](https://github.com/orenskl/pico-jvm/tags)
 
 # Pico JVM
 
