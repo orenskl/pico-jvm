@@ -1,4 +1,4 @@
-![Build status](https://github.com/orenskl/pico-jvm/actions/workflows/main.yml/badge.svg)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/orenskl/pico-jvm/main.yml?label=build&link=https%3A%2F%2Fgithub.com%2Forenskl%2Fpico-jvm%2Factions%2Fworkflows%2Fmain.yml)
 
 # Pico JVM
 
