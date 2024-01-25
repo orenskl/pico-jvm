@@ -9,6 +9,12 @@ The original [phoneME](https://phonej2me.github.io) project used a Makefile base
 
 Currently the JVM support [CLDC 1.1](https://docs.oracle.com/javame/config/cldc/ref-impl/cldc1.1/jsr139/index.html) specification which is a limited subset of the Java  J2SE specification and language.
 
+## Features
+
++ Small footprint - 270KB Flash, 18KB RAM (not including the Java heap)
++ Java 1.4 and [CLDC 1.1](https://docs.oracle.com/javame/config/cldc/ref-impl/cldc1.1/jsr139/index.html) API
++ [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/) Low Level API
+
 ## Installation and setup
 
 Download the release package from the [Releases](https://github.com/orenskl/pico-jvm/releases) page of this repository, extract the package. The package contains the following content :
