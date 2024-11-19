@@ -434,7 +434,7 @@ void Scheduler::sleep_forever() {
 
   if (AbortOnInfiniteWait) {
     TTY_TRACE_CR(("Infinite wait detected. Aborting ..."));
-    *((int*)0x01) = 1; // IMPL_NOTE: perhaps adding an Os::abort()?
+    abort();
     current_thread_to_primordial();
     SHOULD_NOT_REACH_HERE();
   } else {
