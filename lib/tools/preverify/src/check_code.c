@@ -23,6 +23,9 @@
  * information or have any questions.
  */
  
+ /*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
 
 /*=========================================================================
  * SYSTEM:    Verifier
@@ -36,6 +39,8 @@
 /*=========================================================================
  * Include files
  *=======================================================================*/
+
+#include <arpa/inet.h>
 
 #include <check_code.h>
 

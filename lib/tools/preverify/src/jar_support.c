@@ -23,6 +23,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 /*=========================================================================
  * SYSTEM:    Verifier
  * SUBSYSTEM: JAR support routines for the verifier.
@@ -44,6 +48,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <sys_api.h>
 #include <path_md.h>
@@ -495,7 +500,7 @@ loadJARfile(zip_t *entry, const char* filename)
             if (compLen != decompLen) {
                 return NULL;
             }
-            fread(decompData, sizeof(char), decompLen, file);
+            size_t rv = fread(decompData, sizeof(char), decompLen, file);
             break;
 
         case DEFLATED: {
@@ -681,7 +686,7 @@ ReadFromZip(zip_t *entry)
                         jdstream = NULL;
                         goto done;
                     }
-                    fread(decompData, sizeof(char), decompLen, file);
+                    size_t rv = fread(decompData, sizeof(char), decompLen, file);
                     break;
 
                 case DEFLATED: {
@@ -790,7 +795,7 @@ ReadFromZip(zip_t *entry)
                             "Writing file [%s]...\n", sfname);
 
                         /* write the file to the tmpdir just created */
-                        write(fd, decompData, decompLen);
+                        size_t rv = write(fd, decompData, decompLen);
 
                         /* check for the JAR Manifest.mf file */
 

@@ -18,7 +18,7 @@ if (${TARGET} STREQUAL PICO)
     include(pico_sdk_import.cmake)
 endif()
 
-project(pjvm VERSION 0.0.4)
+project(pjvm VERSION 0.0.6)
 
 include(CTest) 
 
@@ -116,7 +116,7 @@ if (${TARGET} STREQUAL PICO)
             DESTINATION .
             RENAME pjvm-${PROJECT_VERSION}.uf2
     )
-    install(PROGRAMS ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ${CMAKE_SOURCE_DIR}/lib/tools/preverify/bin/preverify
+    install(PROGRAMS ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ${BINARY_DIR}/preverify-prefix/src/preverify-build/preverify
             DESTINATION bin
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/doc

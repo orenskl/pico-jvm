@@ -23,6 +23,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 #ifndef _TYPES_MD_H_
 #define _TYPES_MD_H_
 
@@ -52,12 +56,7 @@ typedef long int32_t;
 #endif /* SOLARIS2 */
 
 #ifdef __linux__
-#ifndef       _UINT64_T
-#define       _UINT64_T
-typedef unsigned long long uint64_t;
-#define _UINT32_T
-typedef unsigned long uint32_t;
-#endif
+#include <stdint.h>
 #endif /* __linux__ */
 
 #ifdef DARWIN

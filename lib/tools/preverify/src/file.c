@@ -23,6 +23,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 /*=========================================================================
  * SYSTEM:    Verifier
  * SUBSYSTEM: Operations on class files.
@@ -608,7 +612,7 @@ void
 WriteClass(ClassClass *cb)
 {
     int fd;
-    char fname[1024];
+    char fname[BUFSIZ + 1024];
     char buff[BUFSIZ];
     char *nativeName = &buff[0];
 
@@ -725,7 +729,7 @@ WriteClass(ClassClass *cb)
     }
 
     tmpDirExists = TRUE;   /* tmpDir exists with verified classes */
-    write(fd, class_buf, class_index);
+    size_t rv = write(fd, class_buf, class_index);
     close(fd);
     free(class_buf);
     class_buf_size = 0;
