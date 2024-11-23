@@ -26,4 +26,6 @@ add_executable(preverify
 
 target_compile_definitions(preverify PRIVATE UNIX JAVAVERIFY TRIMMED ARCH=i386)
 target_include_directories(preverify PRIVATE src)
-target_compile_options(preverify PRIVATE)
+target_compile_options(preverify PRIVATE -m32 -Werror)
+target_link_options(preverify PRIVATE -m32)
+

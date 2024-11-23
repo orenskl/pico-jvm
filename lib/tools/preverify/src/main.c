@@ -23,6 +23,10 @@
  * information or have any questions.
  */
 
+/*
+ * Modified (C) Oren Sokoler (https://github.com/orenskl) 
+ */
+
 /*=========================================================================
  * SYSTEM:    Verifier
  * SUBSYSTEM: main program
@@ -51,8 +55,6 @@
 /*=========================================================================
  * Globals and extern declarations
  *=======================================================================*/
-
-char str_buffer[STRINGBUFFERSIZE];   /*  shared string buffer */
 
 int processedfile = 0;
 int errorCode = 0;               /* Error code returned by program */
@@ -232,8 +234,7 @@ static void ProcessInputs(char *argname)
  *                argv: arg value(s)
  *   returns:     nothing
  *=======================================================================*/
-int main(argc, argv)
-    register char **argv;
+int main(int argc, char ** argv)
 {
     char *progname;
     char *argv0 = argv[0];

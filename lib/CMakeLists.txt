@@ -10,6 +10,14 @@ include(ExternalProject)
 
 project(jvm)
 
+#
+# Build the host utilities that are used to build the classes library
+#
+
+#
+# Build ROMGEN, this is actually the VM but its built to generate a 
+# ROM image of the classes library
+#
 ExternalProject_Add(romgen SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/romgen 
                            CMAKE_ARGS -DROMGEN_VERSION=${LIBJVM_VERSION}
                                       -DCMAKE_BUILD_TYPE:STRING=Release
@@ -19,6 +27,20 @@ ExternalProject_Add(romgen SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/romgen
                            INSTALL_COMMAND cmake -E echo "Skipping install step."
 )
 ExternalProject_Get_property(romgen BINARY_DIR)
+set(ROMGEN_BINARY_DIR ${BINARY_DIR})
+
+#
+# Build PREVERIFY to transform the classes before running on the target
+#
+ExternalProject_Add(preverify SOURCE_DIR ${CMAKE_SOURCE_DIR}/tools/preverify
+                              CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=Release
+                              USES_TERMINAL_BUILD TRUE
+                              BUILD_ALWAYS TRUE
+                              BUILD_BYPRODUCTS ${CMAKE_BINARY_DIR}/preverify-prefix/src/preverify-build/preverify
+                              INSTALL_COMMAND cmake -E echo "Skipping install step."
+)
+ExternalProject_Get_property(preverify BINARY_DIR)
+set(PREVERIFY_BINARY_DIR ${BINARY_DIR})
 
 if (${TARGET} STREQUAL PICO)
     set(CMAKE_C_COMPILER   arm-none-eabi-gcc)
@@ -136,15 +158,15 @@ set(JVM_CLASSES
 )
 
 add_custom_command(OUTPUT ROMImage.cpp
-                   DEPENDS ${JVM_CLASSES} ${BINARY_DIR}/romgen
+                   DEPENDS ${JVM_CLASSES} ${ROMGEN_BINARY_DIR}/romgen
                    COMMAND rm ARGS -rf ${CMAKE_BINARY_DIR}/classes ${CMAKE_BINARY_DIR}/classes.preverify
                    COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/classes
                    COMMAND javac ARGS -source 1.4 -target 1.4 -d ${CMAKE_BINARY_DIR}/classes -bootclasspath ${CMAKE_BINARY_DIR}/classes ${JVM_CLASSES}
-                   COMMAND ${CMAKE_SOURCE_DIR}/tools/preverify/bin/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
+                   COMMAND ${PREVERIFY_BINARY_DIR}/preverify ARGS -d ${CMAKE_BINARY_DIR}/classes.preverify ${CMAKE_BINARY_DIR}/classes
                    COMMAND cd ARGS ${CMAKE_BINARY_DIR}/classes.preverify
                    COMMAND jar ARGS -cfM0 ${CMAKE_BINARY_DIR}/classes.jar .
                    COMMAND cd ARGS ${CMAKE_BINARY_DIR}
-                   COMMAND ${BINARY_DIR}/romgen 
+                   COMMAND ${ROMGEN_BINARY_DIR}/romgen 
                                     -cp ${CMAKE_BINARY_DIR}/classes.jar
                                     +RewriteROMConstantPool
                                     +EnableAllROMOptimizations
@@ -154,7 +176,7 @@ add_custom_command(OUTPUT ROMImage.cpp
                                     -romincludepath ${CMAKE_SOURCE_DIR}/src/vm
                                     -romize
 )
-add_custom_target(classes ALL DEPENDS ROMImage.cpp romgen)
+add_custom_target(classes ALL DEPENDS ROMImage.cpp romgen preverify)
 
 if (${TARGET} STREQUAL PICO)
     add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/doc
