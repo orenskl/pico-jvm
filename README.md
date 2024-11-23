@@ -26,7 +26,8 @@ Download the release package from the [Releases](https://github.com/orenskl/pico
 └── pjvm-X.Y.Z.uf2
 ```
 
-The `bin` directory contains tools and scripts required to post process class and jar files to be able to run them on the [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/).
+The `bin` directory contains tools and scripts required to post process class and jar files to be able to run them on the [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/). This directory also contains a Linux version of the virtual machine (`pjvm`) that may be used in development
+stage to test applications on your host machine.
 
 The `doc` directory contains the javadoc for the device specific (e.g. GPIO) classes.
 
@@ -121,11 +122,23 @@ After cloning the project cd into it and run the the usual CMake commands :
 ```
 mkdir build
 cd build
-cmake -DPICO_SDK_PATH=/home/oren/projects/pico-sdk .. -G Ninja
+cmake -DTARGET=PICO -DPICO_SDK_PATH=/home/oren/projects/pico-sdk .. -G Ninja
 cmake --build .
 ```
 
 Make sure you set `PICO_SDK_PATH` to point to your Pico SDK location.
 
 If all goes well you should end up with a `pjvm.uf2` file in your `build` directory. This file can be flashed to the Pi Pico (helper scripts can be found in the `tools` directory). The `pjvm.uf2` file is the Java VM itself and includes the system classes already romized inside it. A Java application is loaded separately into the flash of the Pi Pico at a specific address.
+
+To build the virtual machine for Linux use these commands :
+
+```
+mkdir build
+cd build
+cmake -DTARGET=LINUX .. -G Ninja
+cmake --build .
+```
+
+The output of this build is a Linux executable named `pjvm`.
+
 
