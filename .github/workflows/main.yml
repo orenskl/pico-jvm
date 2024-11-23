@@ -50,7 +50,7 @@ jobs:
       run: ctest -C ${{env.BUILD_TYPE}}
  
     - name: Configure Pico build
-      run: cmake -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -B ${{github.workspace}}/build.pico -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
+      run: cmake -DHOST_BINARY_DIR=${{github.workspace}}/build.linux -DPICO_SDK_PATH=${{github.workspace}}/pico-sdk -B ${{github.workspace}}/build.pico -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G Ninja
 
     - name: Build Pico
       run: cmake --build ${{github.workspace}}/build.pico --config ${{env.BUILD_TYPE}}

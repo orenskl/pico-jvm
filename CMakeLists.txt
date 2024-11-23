@@ -116,7 +116,11 @@ if (${TARGET} STREQUAL PICO)
             DESTINATION .
             RENAME pjvm-${PROJECT_VERSION}.uf2
     )
-    install(PROGRAMS ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ${BINARY_DIR}/preverify-prefix/src/preverify-build/preverify
+    set(PJVM_BIN_PROGRAMS ${CMAKE_SOURCE_DIR}/tools/wrapjar.sh ${BINARY_DIR}/preverify-prefix/src/preverify-build/preverify)
+    if (DEFINED HOST_BINARY_DIR)
+        set(PJVM_BIN_PROGRAMS ${PJVM_BIN_PROGRAMS} ${HOST_BINARY_DIR}/pjvm)
+    endif()
+    install(PROGRAMS ${PJVM_BIN_PROGRAMS}
             DESTINATION bin
     )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/doc
